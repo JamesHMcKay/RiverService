@@ -11,8 +11,9 @@ stages:
 docker-build:
   stage: build
   script:
-  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/riverservice/web .
   - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
+  - docker pull registry.heroku.com/riverservice/web || true
+  - docker build --cache-from web -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/riverservice/web .
   - docker push registry.heroku.com/riverservice/web
   - apk add --no-cache curl
   - echo "Docker Image ID is $(cat imageid.txt)"
