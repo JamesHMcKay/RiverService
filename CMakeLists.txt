@@ -27,11 +27,11 @@ set(CPPFLAGS -stdlib=libc++ LDFLAGS -lcpprest -lssl -lcrypto -lboost_system -lbo
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -Wall ")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O3 ")
 set(CMAKE_CXX_STANDARD 14)
-set(SOURCE_FILES app/main.cpp app/include/feature.h app/include/pch.h app/include/server.h app/include/utils.h app/src/server.cpp app/src/utils.cpp app/src/pch.cpp)
+set(SOURCE_FILES RiverService/main.cpp RiverService/include/feature.h RiverService/include/pch.h RiverService/include/server.h RiverService/include/utils.h RiverService/src/server.cpp RiverService/src/utils.cpp RiverService/src/pch.cpp)
 add_executable(crest ${SOURCE_FILES})
 
 set(CPPRESTSDK_INCLUDE_DIR "./libs/cpprestsdk/Release/include")
-set(APP_INCLUDE_DIR "app/include")
+set(APP_INCLUDE_DIR "RiverService/include")
 set(HEADER_SEARCH_PATHS ${CPPRESTSDK_INCLUDE_DIR} ${APP_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS} pugixml)
 
 if(APPLE)
