@@ -13,7 +13,7 @@ docker-build:
   script:
   - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
   - docker pull registry.heroku.com/riverservice/web || true
-  - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.heroku.com/riverservice/web .
+  - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.heroku.com/riverservice/web --iidfile imageid.txt .
   - docker push registry.heroku.com/riverservice/web
   - apk add --no-cache curl
   - |-
