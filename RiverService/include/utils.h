@@ -3,7 +3,11 @@
 
 #include "feature.h"
 #include <iostream>
+#if defined(WIN32) || defined(_WIN32)
+#include <xlocale>
+#else
 #include <xlocale.h>
+#endif
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"

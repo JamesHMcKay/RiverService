@@ -1,4 +1,8 @@
+#if defined(WIN32) || defined(_WIN32)
+#include <xlocale>
+#else
 #include <xlocale.h>
+#endif
 #include "server.h"
 #include "pugixml.hpp"
 #include "feature.h"
