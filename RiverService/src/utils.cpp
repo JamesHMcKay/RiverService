@@ -1,4 +1,4 @@
-#include <xlocale>
+#include <xlocale.h>
 #include "utils.h"
 #include <iostream>
 #include <fstream>

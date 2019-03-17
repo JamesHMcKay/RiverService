@@ -3,7 +3,7 @@
 
 #include "feature.h"
 #include <iostream>
-#include <xlocale>
+#include <xlocale.h>
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"

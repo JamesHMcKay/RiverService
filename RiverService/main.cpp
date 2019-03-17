@@ -1,4 +1,4 @@
-#include <xlocale>
+#include <xlocale.h>
 #include "server.h"
 #include "pugixml.hpp"
 #include "feature.h"

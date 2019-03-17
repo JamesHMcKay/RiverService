@@ -27,7 +27,7 @@ set(CPPFLAGS -stdlib=libc++ LDFLAGS -lcpprest -lssl -lcrypto -lboost_system -lbo
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -Wall ")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O3 ")
 set(CMAKE_CXX_STANDARD 14)
-set(SOURCE_FILES RiverService/main.cpp RiverService/include/feature.h RiverService/include/pch.h RiverService/include/server.h RiverService/include/utils.h RiverService/src/server.cpp RiverService/src/utils.cpp RiverService/src/pch.cpp)
+set(SOURCE_FILES RiverService/main.cpp RiverService/include/feature.h RiverService/include/server.h RiverService/include/utils.h RiverService/src/server.cpp RiverService/src/utils.cpp)
 add_executable(crest ${SOURCE_FILES})
 
 set(CPPRESTSDK_INCLUDE_DIR "./libs/cpprestsdk/Release/include")
