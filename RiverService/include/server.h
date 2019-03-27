@@ -15,7 +15,7 @@ public:
         _address = address;
     }
 
-    void create_session(map<utility::string_t, feature_of_interest> feature_map, utility::string_t port);
+    void create_session(map<utility::string_t, feature_of_interest> &feature_map, utility::string_t port);
 };
 
 #endif

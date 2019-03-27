@@ -96,13 +96,13 @@ void handle_request(
 
 
 
-const std::function<void(http_request)> handle_post_wrapped(map<utility::string_t, feature_of_interest> feature_map) {
-    return ([feature_map](http_request request) {
+const std::function<void(http_request)> handle_post_wrapped(map<utility::string_t, feature_of_interest> &feature_map) {
+    return ([&feature_map](http_request request) {
         TRACE("\nhandle POST\n");
 
         handle_request(
             request,
-            [feature_map](json::value const & jvalue, json::value & answer)
+            [&feature_map](json::value const & jvalue, json::value & answer)
         {
             for (auto const & e : jvalue.as_array())
             {
@@ -137,8 +137,12 @@ const std::function<void(http_request)> handle_post_wrapped(map<utility::string_
 }
 
 
-void server_session::create_session(map<utility::string_t, feature_of_interest> feature_map, utility::string_t port) {
-    string host = "http://0.0.0.0:"; //"http://localhost:"
+void server_session::create_session(map<utility::string_t, feature_of_interest> &feature_map, utility::string_t port) {
+#if defined(WIN32) || defined(_WIN32)
+    string host = "http://0.0.0.0:";
+#else
+    string host = "http://localhost:";
+#endif
     utility::string_t address = utility::conversions::to_string_t(host) + port;
 
     http_listener listener(address);
