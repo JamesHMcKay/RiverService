@@ -139,9 +139,9 @@ const std::function<void(http_request)> handle_post_wrapped(map<utility::string_
 
 void server_session::create_session(map<utility::string_t, feature_of_interest> &feature_map, utility::string_t port) {
 #if defined(WIN32) || defined(_WIN32)
-    string host = "http://0.0.0.0:";
-#else
     string host = "http://localhost:";
+#else
+    string host = "http://0.0.0.0:";
 #endif
     utility::string_t address = utility::conversions::to_string_t(host) + port;
 
