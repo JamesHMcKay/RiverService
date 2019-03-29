@@ -14,6 +14,9 @@
 #include <map>
 #include <future>
 
+#include <thread>
+#include <chrono>
+
 using namespace std;
 
 using namespace web::http;
@@ -44,7 +47,7 @@ void get_flows(feature_of_interest &feature) {
 
 void get_features(map<utility::string_t, feature_of_interest> &features_map) {
     std::vector<feature_of_interest> features;
-
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     std::wcout << L"Calling HTTPGetAsync..." << std::endl;
     string res_string = HTTPGetAsync().get();
     pugi::xml_document doc;
@@ -71,6 +74,7 @@ int main(int argc, char *argv[]) {
 
     server_session server;
     std::future<void> result = std::async(get_features, std::ref(features_map));
+
     server.create_session(features_map, port);
     result.get();
     // for (auto const& x : features_map) {

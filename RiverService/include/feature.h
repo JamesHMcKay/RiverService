@@ -97,6 +97,10 @@ public:
         return _id;
     }
 
+    utility::string_t get_name() {
+        return utility::conversions::to_string_t(_name);
+    }
+
     vector<sensor_obs> get_sensor_history() {
         return sensor_history;
     }

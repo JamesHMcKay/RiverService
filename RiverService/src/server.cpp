@@ -94,6 +94,20 @@ void handle_request(
     request.reply(status_codes::OK, answer);
 }
 
+json::value get_available_features(map<utility::string_t, feature_of_interest> &feature_map) {
+    web::json::value response;
+    std::vector<web::json::value> features;
+    for (auto const & item : feature_map) {
+        feature_of_interest feature = item.second;
+        web::json::value feature_item;
+        feature_item[U("id")] = json::value(feature.get_id());
+        feature_item[U("name")] = json::value::string(feature.get_name());
+        features.push_back(feature_item);
+    }
+    response[U("features")] = web::json::value::array(features);
+    return response;
+}
+
 
 
 const std::function<void(http_request)> handle_post_wrapped(map<utility::string_t, feature_of_interest> &feature_map) {
@@ -113,7 +127,7 @@ const std::function<void(http_request)> handle_post_wrapped(map<utility::string_
 
                     if (pos == feature_map.end())
                     {
-                        answer[key] = json::value::string(U("<nil>"));
+                        answer = get_available_features(feature_map);
                     }
                     else
                     {
