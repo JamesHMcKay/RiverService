@@ -171,7 +171,10 @@ void server_session::create_session(data_store &data, utility::string_t port) {
             .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
             .wait();
         data.update_sources();
-        while (true);
+        while (true) {
+            cout << " here" << endl;
+            std::this_thread::sleep_for(std::chrono::seconds(20));
+        }
     }
     catch (exception const & e)
     {
