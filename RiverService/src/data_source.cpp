@@ -135,7 +135,6 @@ void data_source::get_flows(feature_of_interest &feature) {
 
 void data_source::get_features(map<utility::string_t, feature_of_interest> &features_map) {
     std::vector<feature_of_interest> features;
-    std::this_thread::sleep_for(std::chrono::seconds(5));
     std::wcout << L"Calling HTTPGetAsync..." << std::endl;
     string res_string = get_features().get();
     pugi::xml_document doc;
