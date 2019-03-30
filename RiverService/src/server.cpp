@@ -95,7 +95,8 @@ void handle_request(
     request.reply(status_codes::OK, answer);
 }
 
-json::value get_available_features(map<utility::string_t, feature_of_interest> &feature_map) {
+json::value get_available_features(data_store &data) {
+    map<utility::string_t, feature_of_interest> feature_map = data.feature_map;
     web::json::value response;
     std::vector<web::json::value> features;
     for (auto const & item : feature_map) {
@@ -106,10 +107,13 @@ json::value get_available_features(map<utility::string_t, feature_of_interest> &
         features.push_back(feature_item);
     }
     response[U("features")] = web::json::value::array(features);
+
+    string last_update_time = data.get_last_updated_time_str();
+    string_t last_update_time_t = utility::conversions::to_string_t(last_update_time);
+    response[U("last_update_time")] = json::value(last_update_time_t);
+
     return response;
 }
-
-
 
 const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
     return ([&data](http_request request) {
@@ -128,7 +132,7 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
 
                     if (pos == data.feature_map.end())
                     {
-                        answer = get_available_features(data.feature_map);
+                        answer = get_available_features(data);
                     }
                     else
                     {
@@ -171,10 +175,10 @@ void server_session::create_session(data_store &data, utility::string_t port) {
             .open()
             .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
             .wait();
-        data.update_sources();
         while (true) {
-            cout << " here" << endl;
-            std::this_thread::sleep_for(std::chrono::seconds(20));
+            data.update_sources();
+
+            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
     }
     catch (exception const & e)

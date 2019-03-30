@@ -26,11 +26,12 @@ using namespace std;
 
 class data_source {
     string _host_url;
-    bool initiliased = false;
+    bool initiliased;
 public:
     data_source() {}
     data_source(string host_url) {
         _host_url = host_url;
+        initiliased = false;
     }
 
     void process_feature_response(pugi::xml_node responses, std::vector<feature_of_interest> &result);

@@ -153,7 +153,10 @@ void data_source::get_features(map<utility::string_t, feature_of_interest> &feat
 }
 
 void data_source::update(map<utility::string_t, feature_of_interest> &features_map) {
+    cout << "!initialised = " << !initiliased;
     if (!initiliased) {
+        initiliased = true;
+        cout << "set !initialsed to  = " << !initiliased << endl;
         get_features(features_map);
     }
 }

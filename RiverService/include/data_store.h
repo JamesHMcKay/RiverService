@@ -4,13 +4,15 @@
 #include "lat_lon.h"
 #include "sensor_obs.h"
 #include "data_source.h"
+#include <chrono>
+#include <ctime>
 
 #include <iostream>
 using namespace std;
 
 class data_store {
     vector<data_source> _data_sources;
-
+    chrono::system_clock::time_point last_updated = chrono::system_clock::now();
 
 public:
     data_store() {}
@@ -22,11 +24,16 @@ public:
 
     void update_sources() {
         cout << "updating sources" << endl;
-        for (auto source : _data_sources) {
+        last_updated = chrono::system_clock::now();
+        for (auto &source : _data_sources) {
             source.update(feature_map);
         }
     }
 
+    string get_last_updated_time_str() {
+        std::time_t time = std::chrono::system_clock::to_time_t(last_updated);
+        return ctime(&time);
+    }
 };
 
 
