@@ -3,6 +3,7 @@
 
 #include <string>
 #include "feature.h"
+#include "data_store.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
         _address = address;
     }
 
-    void create_session(map<utility::string_t, feature_of_interest> &feature_map, utility::string_t port);
+    void create_session(data_store &data, utility::string_t port);
 };
 
 #endif

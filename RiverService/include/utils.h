@@ -30,13 +30,6 @@ using namespace web::http::client;
 using namespace web::json;
 
 namespace utils {
-    void process_feature_response(pugi::xml_node responses, std::vector<feature_of_interest> &result);
-
-    void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result);
-
-    pplx::task<string> HTTPGetAsync();
-
-    pplx::task<string> get_flow_data(utility::string_t feature_id);
 }
 
 #endif

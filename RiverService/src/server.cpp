@@ -110,24 +110,24 @@ json::value get_available_features(map<utility::string_t, feature_of_interest> &
 
 
 
-const std::function<void(http_request)> handle_post_wrapped(map<utility::string_t, feature_of_interest> &feature_map) {
-    return ([&feature_map](http_request request) {
+const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
+    return ([&data](http_request request) {
         TRACE("\nhandle POST\n");
 
         handle_request(
             request,
-            [&feature_map](json::value const & jvalue, json::value & answer)
+            [&data](json::value const & jvalue, json::value & answer)
         {
             for (auto const & e : jvalue.as_array())
             {
                 if (e.is_string())
                 {
                     auto key = e.as_string();
-                    auto pos = feature_map.find(key);
+                    auto pos = data.feature_map.find(key);
 
-                    if (pos == feature_map.end())
+                    if (pos == data.feature_map.end())
                     {
-                        answer = get_available_features(feature_map);
+                        answer = get_available_features(data.feature_map);
                     }
                     else
                     {
@@ -151,7 +151,7 @@ const std::function<void(http_request)> handle_post_wrapped(map<utility::string_
 }
 
 
-void server_session::create_session(map<utility::string_t, feature_of_interest> &feature_map, utility::string_t port) {
+void server_session::create_session(data_store &data, utility::string_t port) {
 #if defined(WIN32) || defined(_WIN32)
     string host = "http://localhost:";
 #else
@@ -162,7 +162,7 @@ void server_session::create_session(map<utility::string_t, feature_of_interest> 
     http_listener listener(address);
     wcout << "listening on " << port.c_str() << endl;
     listener.support(methods::GET, handle_get_wrapped(flows));
-    listener.support(methods::POST, handle_post_wrapped(feature_map));
+    listener.support(methods::POST, handle_post_wrapped(data));
 
     try
     {
@@ -170,7 +170,7 @@ void server_session::create_session(map<utility::string_t, feature_of_interest> 
             .open()
             .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
             .wait();
-
+        data.update_sources();
         while (true);
     }
     catch (exception const & e)

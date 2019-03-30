@@ -152,12 +152,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\feature.h" />
+    <ClInclude Include="include\lat_lon.h" />
+    <ClInclude Include="include\sensor_obs.h" />
     <ClInclude Include="include\server.h" />
+    <ClInclude Include="include\data_store.h" />
     <ClInclude Include="include\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\data_source.cpp" />
     <ClCompile Include="src\server.cpp" />
     <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
