@@ -178,7 +178,7 @@ void server_session::create_session(data_store &data, utility::string_t port) {
         while (true) {
             data.update_sources();
 
-            std::this_thread::sleep_for(std::chrono::seconds(5));
+            std::this_thread::sleep_for(std::chrono::minutes(15));
         }
     }
     catch (exception const & e)
