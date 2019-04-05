@@ -28,7 +28,7 @@ void data_store::get_available_features() {
     while (!update_queue_copy.empty()) {
         feature_of_interest* temp_feature = update_queue_copy.top();
         chrono::duration <double> time = temp_feature->next_update_time;
-        wcout << temp_feature->get_name() << ", with next update time = " << time.count() << endl;
+        wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
         update_queue_copy.pop();
     }
 }
@@ -45,7 +45,7 @@ void data_store::update_sources() {
     vector<feature_of_interest*> updated_features;
     while (!update_queue.empty() && update_queue.top()->next_update_time < current_time_ref) {
         feature_of_interest* temp_feature = update_queue.top();
-        wcout << "updating feature with name " << temp_feature->get_name() << endl;
+        wcout << "updating feature with name " << temp_feature->get_name().c_str() << endl;
         temp_feature->update();
         update_queue.pop();
         updated_features.push_back(temp_feature);
@@ -60,7 +60,7 @@ void data_store::update_sources() {
     while (!update_queue_copy.empty()) {
         feature_of_interest* temp_feature = update_queue_copy.top();
         chrono::duration <double> time = temp_feature->next_update_time;
-        wcout << temp_feature->get_name() << ", with next update time = " << time.count() << endl;
+        wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
         update_queue_copy.pop();
     }
 }
