@@ -63,7 +63,7 @@ void feature_of_interest::update() {
 pplx::task<string> feature_of_interest::get_flow_data(utility::string_t feature_id, string lower_time)
 {
     string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
-    cout << "Getting flow data, time filter = " << time_filter << endl;
+    wcout << "Getting flow data, time filter = " << utility::conversions::to_string_t(time_filter) << endl;
     string_t url = utility::conversions::to_string_t(_host_url);
     http_client client(url);
     uri_builder builder;
