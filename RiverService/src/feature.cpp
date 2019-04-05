@@ -6,7 +6,7 @@ bool accept_observation(sensor_obs first, sensor_obs second, duration<double> to
     system_clock::time_point first_time = utils::convert_time_str(first.get_time_str());
     system_clock::time_point second_time = utils::convert_time_str(second.get_time_str());
 
-    if (abs(first_time - second_time) < tolerance) {
+    if (second_time - first_time < tolerance) {
         return false;
     }
     return true;
@@ -87,7 +87,7 @@ pplx::task<string> feature_of_interest::get_flow_data(utility::string_t feature_
         std::wcout << stream.str();
 
         auto bodyStream = response.body();
-        streams::stringstreambuf sbuffer;
+        Concurrency::streams::stringstreambuf sbuffer;
         auto& target = sbuffer.collection();
 
         bodyStream.read_to_end(sbuffer).get();

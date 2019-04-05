@@ -9,7 +9,7 @@ namespace utils {
         return "2019-04-04T01:00:00.000Z";
     }
 
-    time_t timegm(tm* _Tm)
+    time_t my_timegm(tm* _Tm)
     {
         auto t = mktime(_Tm);
         return t + (mktime(localtime(&t)) - mktime(gmtime(&t)));
@@ -19,7 +19,7 @@ namespace utils {
         std::istringstream input(time);
         tm t{};
         input >> std::get_time(&t, "%Y-%m-%dT%H:%M:%S");
-        return chrono::system_clock::from_time_t(timegm(&t));
+        return chrono::system_clock::from_time_t(my_timegm(&t));
     }
 
     // fix this to get the actual date time
