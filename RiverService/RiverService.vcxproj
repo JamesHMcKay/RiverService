@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\feature.h" />
+    <ClInclude Include="include\health_tracker.h" />
     <ClInclude Include="include\lat_lon.h" />
     <ClInclude Include="include\observation_store.h" />
     <ClInclude Include="include\sensor_obs.h" />

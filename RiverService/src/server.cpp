@@ -32,12 +32,18 @@ void display_json(
     //wcout << prefix << jvalue.serialize() << endl;
 }
 
-const std::function<void(http_request)> handle_get_wrapped(vector<sensor_obs> flows) {
-    return ([flows](http_request request) {
+const std::function<void(http_request)> handle_get_wrapped(health_tracker &health) {
+    return ([&health](http_request request) {
         TRACE(L"\nhandle GET\n");
 
         auto answer = json::value::object();
-        answer[U("status")] = json::value::string(U("Okay"));
+        string_t status = utility::conversions::to_string_t(health.get_status());
+
+        answer[U("status")] = json::value::string(status);
+        chrono::duration<double> up_time_duration = health.get_uptime();
+        auto up_time = std::chrono::duration_cast<std::chrono::milliseconds>(up_time_duration).count();
+
+        answer[U("up_time")] = json::value(up_time);
 
         display_json(json::value::null(), U("R: "));
         display_json(answer, U("S: "));
@@ -157,7 +163,7 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
 }
 
 
-void server_session::create_session(data_store &data, utility::string_t port) {
+void server_session::create_session(data_store &data, utility::string_t port, health_tracker &health) {
 #if defined(WIN32) || defined(_WIN32)
     string host = "http://localhost:";
 #else
@@ -167,7 +173,7 @@ void server_session::create_session(data_store &data, utility::string_t port) {
 
     http_listener listener(address);
     wcout << "listening on " << port.c_str() << endl;
-    listener.support(methods::GET, handle_get_wrapped(flows));
+    listener.support(methods::GET, handle_get_wrapped(health));
     listener.support(methods::POST, handle_post_wrapped(data));
 
     try

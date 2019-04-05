@@ -24,7 +24,6 @@ public:
 class observation_store {
     observation<sensor_obs>* first = NULL;
     observation<sensor_obs>* last = NULL;
-    int length = 0;
 
     void set_up(observation<sensor_obs>* obs_input) {
         first = obs_input;
@@ -37,6 +36,8 @@ public:
         observation<sensor_obs>* obs_input = new observation<sensor_obs>(obs);
         set_up(obs_input);
     }
+
+    int length = 0;
 
     observation<sensor_obs>* get_first() {
         return first;

@@ -40,7 +40,7 @@ void feature_of_interest::update() {
 
     string lower_time;
     int num_points = sensor_history.size();
-    if (num_points == 0) {
+    if (obs_store.length == 0) {
         lower_time = utils::ref_time_str();
     } else {
         string latest_time = obs_store.get_first()->value.get_time_str();

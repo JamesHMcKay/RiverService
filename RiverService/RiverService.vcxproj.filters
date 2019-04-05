@@ -39,6 +39,9 @@
     <ClInclude Include="include\observation_store.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\health_tracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server.cpp">

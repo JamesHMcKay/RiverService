@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "data_source.h"
 #include "data_store.h"
+#include "health_tracker.h"
 
 #include <iostream>
 #include <string>
@@ -29,26 +30,19 @@ using namespace utils;
 
 int main(int argc, char *argv[]) {
 
+    health_tracker health;
+
     data_source niwa_source("https://hydro-sos.niwa.co.nz/");
     vector<data_source> data_sources;
     data_sources.push_back(niwa_source);
 
     data_store data(data_sources);
-
-    //map<utility::string_t, feature_of_interest> features_map;
     utility::string_t port = U("5000");
     if (argc == 2) {
         port = utility::conversions::to_string_t(argv[1]);
     }
 
     server_session server;
-    //std::future<void> result = std::async(get_features, std::ref(features_map));
-
-    server.create_session(data, port);
-    //result.get();
-    // for (auto const& x : features_map) {
-    //     get_flows(features_map[x.first]);
-    // }
-    
+    server.create_session(data, port, health);
     return 0;
 }
