@@ -43,7 +43,7 @@ void feature_of_interest::update() {
     if (num_points == 0) {
         lower_time = utils::ref_time_str();
     } else {
-        string latest_time = sensor_history[0].get_time_str();
+        string latest_time = obs_store.get_first()->value.get_time_str();
         int time_str_length = latest_time.size();
         string time_zone = latest_time.substr(time_str_length - 5, time_str_length - 1);
         lower_time = utils::get_time_utc(utils::convert_time_str(latest_time), time_zone);

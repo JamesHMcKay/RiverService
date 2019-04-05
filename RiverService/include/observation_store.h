@@ -38,6 +38,14 @@ public:
         set_up(obs_input);
     }
 
+    observation<sensor_obs>* get_first() {
+        return first;
+    }
+
+    observation<sensor_obs>* get_last() {
+        return last;
+    }
+
     void add_to_top(sensor_obs obs) {
         observation<sensor_obs>* obs_input = new observation<sensor_obs>(obs);
         if (first == NULL) {
