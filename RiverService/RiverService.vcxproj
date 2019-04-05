@@ -155,6 +155,7 @@
     <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\feature.h" />
     <ClInclude Include="include\lat_lon.h" />
+    <ClInclude Include="include\observation_store.h" />
     <ClInclude Include="include\sensor_obs.h" />
     <ClInclude Include="include\server.h" />
     <ClInclude Include="include\data_store.h" />
@@ -163,6 +164,8 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\data_source.cpp" />
+    <ClCompile Include="src\data_store.cpp" />
+    <ClCompile Include="src\feature.cpp" />
     <ClCompile Include="src\server.cpp" />
     <ClCompile Include="src\utils.cpp" />
   </ItemGroup>

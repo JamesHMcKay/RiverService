@@ -14,20 +14,24 @@ using namespace std;
 
 class sensor_obs {
     double _value;
-    utility::string_t _time;
+    string _time;
     string _units;
 public:
     sensor_obs() {}
 
-    sensor_obs(double value, utility::string_t time, string units) {
+    sensor_obs(double value, string time, string units) {
         _value = value;
         _units = units;
         _time = time;
     }
 
     utility::string_t get_time() {
-        return _time;
+        return utility::conversions::to_string_t(_time);
     };
+
+    string get_time_str() {
+        return _time;
+    }
 
     double get_flow() {
         return _value;

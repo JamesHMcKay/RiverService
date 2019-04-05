@@ -36,17 +36,11 @@ public:
 
     void process_feature_response(pugi::xml_node responses, std::vector<feature_of_interest> &result);
 
-    void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result);
-
     pplx::task<string> get_features();
-
-    pplx::task<string> get_flow_data(utility::string_t feature_id);
 
     void get_features(map<utility::string_t, feature_of_interest> &features_map);
 
-    void get_flows(feature_of_interest &feature);
-
-    void update(map<utility::string_t, feature_of_interest> &features_map);
+    void get_available_features(map<utility::string_t, feature_of_interest> &features_map);
 };
 
 #endif

@@ -137,7 +137,8 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                     else
                     {
                         feature_of_interest feature = pos->second;
-                        vector<sensor_obs> flow_history = feature.get_sensor_history();
+                        //vector<sensor_obs> flow_history = feature.get_sensor_history();
+                        vector<sensor_obs> flow_history = feature.obs_store.get_as_vector();
 
                         std::vector<web::json::value> flowOut;
                         for (unsigned int i = 0; i < flow_history.size(); i++) {
@@ -175,10 +176,12 @@ void server_session::create_session(data_store &data, utility::string_t port) {
             .open()
             .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
             .wait();
+        data.get_available_features();
         while (true) {
+            // return a value that is the time until the next update is required
+            // for use in the sleep function
             data.update_sources();
-
-            std::this_thread::sleep_for(std::chrono::minutes(15));
+            std::this_thread::sleep_for(std::chrono::minutes(60));
         }
     }
     catch (exception const & e)

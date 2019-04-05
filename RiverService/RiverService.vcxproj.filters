@@ -36,6 +36,9 @@
     <ClInclude Include="include\lat_lon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\observation_store.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server.cpp">
@@ -48,6 +51,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\data_source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\data_store.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\feature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
