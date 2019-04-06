@@ -85,15 +85,17 @@ public:
     }
 
     void remove_old_points(chrono::duration<double> time_span) {
-        system_clock::time_point latest_time = utils::get_time_point_utc(first->value.get_time_str());
-        vector<sensor_obs> result;
-        observation<sensor_obs>* node = last;
-        while (node->next != NULL && will_remove_point(node->value, time_span, latest_time)) {
-            last = node->next;
-            last->prev = NULL;
-            delete node;
-            node = last;
-            length--;
+        if (first != NULL) {
+            system_clock::time_point latest_time = utils::get_time_point_utc(first->value.get_time_str());
+            vector<sensor_obs> result;
+            observation<sensor_obs>* node = last;
+            while (node->next != NULL && will_remove_point(node->value, time_span, latest_time)) {
+                last = node->next;
+                last->prev = NULL;
+                delete node;
+                node = last;
+                length--;
+            }
         }
     }
 };

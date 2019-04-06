@@ -16,7 +16,7 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
     int num_of_obs = obs.size();
     duration<double > tolerance = hours(1);
 
-    if (obs_store.length == 0) {
+    if (obs_store.length == 0 && num_of_obs > 0) {
         obs_store.add_to_top(obs[0]);
     }
 
@@ -40,7 +40,6 @@ void feature_of_interest::update() {
     std::vector<sensor_obs> flows;
 
     string lower_time;
-    int num_points = sensor_history.size();
     if (obs_store.length == 0) {
         lower_time = utils::ref_time_str();
     } else {

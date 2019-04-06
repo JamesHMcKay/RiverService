@@ -41,9 +41,9 @@ const std::function<void(http_request)> handle_get_wrapped(health_tracker &healt
 
         answer[U("status")] = json::value::string(status);
         chrono::duration<double> up_time_duration = health.get_uptime();
-        auto up_time = std::chrono::duration_cast<std::chrono::hours>(up_time_duration).count();
+        auto up_time = std::chrono::duration_cast<std::chrono::seconds>(up_time_duration).count();
 
-        answer[U("up_time_hours")] = json::value(up_time);
+        answer[U("up_time_seconds")] = json::value(up_time);
 
         display_json(json::value::null(), U("R: "));
         display_json(answer, U("S: "));
