@@ -1,5 +1,5 @@
 # RiverService
-This is web service designed to aggregate flow and metadata delivered in SOS format for New Zealand rivers.
+This is a web service designed to aggregate flow and metadata delivered in SOS format for New Zealand rivers.
 
 For current testing flow data is only updated every 30 minutes, and any data older than three hours is discarded.
 
