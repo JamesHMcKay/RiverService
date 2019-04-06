@@ -16,13 +16,13 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
     int num_of_obs = obs.size();
     duration<double > tolerance = hours(1);
 
-    obs_store.add_to_top(obs[0]);
-    sensor_obs last_accepted_point = obs[0];
+    if (obs_store.length == 0) {
+        obs_store.add_to_top(obs[0]);
+    }
 
     for (int i = 1; i < num_of_obs; i++) {
-        if (accept_observation(last_accepted_point, obs[i], tolerance)) {
+        if (accept_observation(obs_store.get_first()->value, obs[i], tolerance)) {
             obs_store.add_to_top(obs[i]);
-            last_accepted_point = obs[i];
         }
     }
 
@@ -36,6 +36,7 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
 
 void feature_of_interest::update() {
     // get an example flow response
+    last_checked_for_updates = chrono::system_clock::now();
     std::vector<sensor_obs> flows;
 
     string lower_time;

@@ -143,8 +143,11 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                     else
                     {
                         feature_of_interest feature = pos->second;
-                        //vector<sensor_obs> flow_history = feature.get_sensor_history();
                         vector<sensor_obs> flow_history = feature.obs_store.get_as_vector();
+
+                        answer[U("id")] = json::value::string(feature.get_id());
+                        answer[U("name")] = json::value::string(feature.get_name());
+                        answer[U("last_updated")] = json::value::string(feature.get_last_checked_time());
 
                         std::vector<web::json::value> flowOut;
                         for (unsigned int i = 0; i < flow_history.size(); i++) {

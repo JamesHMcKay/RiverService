@@ -39,6 +39,7 @@ class feature_of_interest {
 
     chrono::duration<double> update_period = chrono::duration<double>::zero();
     system_clock::time_point last_recieved_data;
+    system_clock::time_point last_checked_for_updates;
 
 public:
     observation_store obs_store;
@@ -50,6 +51,10 @@ public:
         _position = position;
         _id = id;
         _host_url = host_url;
+    }
+
+    utility::string_t get_last_checked_time() {
+        return utility::conversions::to_string_t(utils::get_time_utc(last_checked_for_updates));
     }
 
     void add_sensor_obs(vector<sensor_obs> observations) {

@@ -43,7 +43,7 @@ namespace utils {
 
     system_clock::time_point get_time_point_utc(string latest_time);
 
-    string get_time_utc(chrono::system_clock::time_point time, string time_zone_diff);
+    string get_time_utc(chrono::system_clock::time_point time, string time_zone_diff = "0");
 }
 
 #endif
