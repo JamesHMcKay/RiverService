@@ -120,6 +120,14 @@ public:
     void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result);
 
     void filter_observations(vector<sensor_obs> observations);
+
+    double get_latest_flow() {
+        double flow = 0;
+        if (obs_store.get_first() != NULL) {
+            flow = obs_store.get_first()->value.get_flow();
+        }
+        return flow;
+    }
 };
 
 

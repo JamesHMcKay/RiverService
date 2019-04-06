@@ -41,9 +41,9 @@ const std::function<void(http_request)> handle_get_wrapped(health_tracker &healt
 
         answer[U("status")] = json::value::string(status);
         chrono::duration<double> up_time_duration = health.get_uptime();
-        auto up_time = std::chrono::duration_cast<std::chrono::milliseconds>(up_time_duration).count();
+        auto up_time = std::chrono::duration_cast<std::chrono::hours>(up_time_duration).count();
 
-        answer[U("up_time")] = json::value(up_time);
+        answer[U("up_time_hours")] = json::value(up_time);
 
         display_json(json::value::null(), U("R: "));
         display_json(answer, U("S: "));
@@ -110,6 +110,7 @@ json::value get_available_features(data_store &data) {
         web::json::value feature_item;
         feature_item[U("id")] = json::value(feature.get_id());
         feature_item[U("name")] = json::value::string(feature.get_name());
+        feature_item[U("latest_flow")] = json::value(feature.get_latest_flow());
         features.push_back(feature_item);
     }
     response[U("features")] = web::json::value::array(features);
@@ -121,45 +122,62 @@ json::value get_available_features(data_store &data) {
     return response;
 }
 
+
+
+json::value get_flow_response(data_store &data, json::value ids) {
+    json::value answer;
+    for (auto const & e : ids.as_array())
+    {
+        if (e.is_string())
+        {
+            auto key = e.as_string();
+            auto pos = data.feature_map.find(key);
+
+            if (pos == data.feature_map.end())
+            {
+                answer = get_available_features(data);
+            }
+            else
+            {
+                feature_of_interest feature = pos->second;
+                vector<sensor_obs> flow_history = feature.obs_store.get_as_vector();
+
+                answer[U("id")] = json::value::string(feature.get_id());
+                answer[U("name")] = json::value::string(feature.get_name());
+                answer[U("last_updated")] = json::value::string(feature.get_last_checked_time());
+
+                std::vector<web::json::value> flowOut;
+                for (unsigned int i = 0; i < flow_history.size(); i++) {
+                    sensor_obs item = flow_history[i];
+                    web::json::value vehicle;
+                    vehicle[U("flow")] = json::value(item.get_flow());
+                    vehicle[U("time")] = json::value::string(item.get_time());
+                    flowOut.push_back(vehicle);
+                }
+                answer[U("flows")] = web::json::value::array(flowOut);
+            }
+        }
+    }
+    return answer;
+}
+
 const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
     return ([&data](http_request request) {
         TRACE("\nhandle POST\n");
 
         handle_request(
             request,
-            [&data](json::value const & jvalue, json::value & answer)
-        {
-            for (auto const & e : jvalue.as_array())
-            {
-                if (e.is_string())
-                {
-                    auto key = e.as_string();
-                    auto pos = data.feature_map.find(key);
+            [&data](json::value const & jvalue, json::value & answer) {
+            json::value action = jvalue.at(U("action"));
+            string_t action_str = action.as_string();
 
-                    if (pos == data.feature_map.end())
-                    {
-                        answer = get_available_features(data);
-                    }
-                    else
-                    {
-                        feature_of_interest feature = pos->second;
-                        vector<sensor_obs> flow_history = feature.obs_store.get_as_vector();
+            if (action_str == utility::conversions::to_string_t("get_flows")) {
+                json::value ids = jvalue.at(U("id"));
+                answer = get_flow_response(data, ids);
+            }
 
-                        answer[U("id")] = json::value::string(feature.get_id());
-                        answer[U("name")] = json::value::string(feature.get_name());
-                        answer[U("last_updated")] = json::value::string(feature.get_last_checked_time());
-
-                        std::vector<web::json::value> flowOut;
-                        for (unsigned int i = 0; i < flow_history.size(); i++) {
-                            sensor_obs item = flow_history[i];
-                            web::json::value vehicle;
-                            vehicle[U("flow")] = json::value(item.get_flow());
-                            vehicle[U("time")] = json::value::string(item.get_time());
-                            flowOut.push_back(vehicle);
-                        }
-                        answer[U("flows")] = web::json::value::array(flowOut);
-                    }
-                }
+            if (action_str == utility::conversions::to_string_t("get_features")) {
+                answer = get_available_features(data);
             }
         });
     });
@@ -190,7 +208,7 @@ void server_session::create_session(data_store &data, utility::string_t port, he
             // return a value that is the time until the next update is required
             // for use in the sleep function
             data.update_sources();
-            std::this_thread::sleep_for(std::chrono::minutes(60));
+            std::this_thread::sleep_for(std::chrono::minutes(30));
         }
     }
     catch (exception const & e)
