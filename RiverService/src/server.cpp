@@ -167,7 +167,7 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
 
         handle_request(
             request,
-            [&data](json::value const & jvalue, json::value & answer) {
+            [&data, &request](json::value const & jvalue, json::value & answer) {
             json::value action = jvalue.at(U("action"));
             string_t action_str = action.as_string();
 
@@ -179,10 +179,24 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
             if (action_str == utility::conversions::to_string_t("get_features")) {
                 answer = get_available_features(data);
             }
+
+            http_response response(status_codes::OK);
+            response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
+            response.set_body(answer);
+            request.reply(response);
         });
     });
 }
 
+void handle_options(http_request request)
+{
+    http_response response(status_codes::OK);
+    response.headers().add(U("Allow"), U("GET, POST, OPTIONS"));
+    response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
+    response.headers().add(U("Access-Control-Allow-Methods"), U("GET, POST, OPTIONS"));
+    response.headers().add(U("Access-Control-Allow-Headers"), U("Content-Type"));
+    request.reply(response);
+}
 
 void server_session::create_session(data_store &data, utility::string_t port, health_tracker &health) {
 #if defined(WIN32) || defined(_WIN32)
@@ -196,6 +210,7 @@ void server_session::create_session(data_store &data, utility::string_t port, he
     wcout << "listening on " << port.c_str() << endl;
     listener.support(methods::GET, handle_get_wrapped(health));
     listener.support(methods::POST, handle_post_wrapped(data));
+    listener.support(methods::OPTIONS, handle_options);
 
     try
     {
