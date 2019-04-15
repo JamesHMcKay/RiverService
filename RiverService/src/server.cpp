@@ -194,7 +194,8 @@ void handle_options(http_request request)
     response.headers().add(U("Allow"), U("GET, POST, OPTIONS"));
     response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
     response.headers().add(U("Access-Control-Allow-Methods"), U("GET, POST, OPTIONS"));
-    response.headers().add(U("Access-Control-Allow-Headers"), U("Content-Type"));
+    response.headers().add(U("Access-Control-Allow-Headers"), U("authorization, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+
     request.reply(response);
 }
 

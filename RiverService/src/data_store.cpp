@@ -21,11 +21,11 @@ void data_store::get_available_features() {
     update_queue.push(&entry);
 
     for (auto &entry : feature_map) {
-        //count++;
+       // count++;
        // if (count < 5) {
-        entry.second.update();
-        update_queue.push(&entry.second);
-        //
+            entry.second.update();
+            update_queue.push(&entry.second);
+       // }
     }
 
     wcout << "queue is created, the current order is:" << endl;
