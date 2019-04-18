@@ -76,6 +76,10 @@ public:
         return _id;
     }
 
+    lat_lon get_position() {
+        return _position;
+    }
+
     string get_name_str() {
         return _name;
     }
@@ -107,10 +111,6 @@ public:
         next_update_time = current_time_ref + max(absolute_update_period, update_period);// + chrono::seconds(120);
 
         cout << "setting update time, latest flow = " << latest_point.get_flow() << " penultimate flow = " << penultimate_point.get_flow() << endl;
-    }
-
-    void print_content() {
-        cout << "name = " << _name << " lattitude = " << _position.print_content() << endl;
     }
 
     void update();

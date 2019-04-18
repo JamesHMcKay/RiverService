@@ -111,6 +111,10 @@ json::value get_available_features(data_store &data) {
         feature_item[U("id")] = json::value(feature.get_id());
         feature_item[U("name")] = json::value::string(feature.get_name());
         feature_item[U("latest_flow")] = json::value(feature.get_latest_flow());
+
+        lat_lon position = feature.get_position();
+        feature_item[U("location")] = position.get_lat_lon();
+
         features.push_back(feature_item);
     }
     response[U("features")] = web::json::value::array(features);

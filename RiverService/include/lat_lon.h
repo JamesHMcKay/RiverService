@@ -5,25 +5,30 @@
 #include <sstream>
 #include <string>
 
-using namespace std;
+#include <cpprest/http_listener.h>
+#include <cpprest/json.h>
+#include <fstream>
 
+using namespace web;
+using namespace web::http;
+using namespace web::http::experimental::listener;
+
+using namespace std;
 class lat_lon {
-    double _lat;
-    double _lon;
 public:
+    double lat;
+    double lon;
+
     lat_lon() {}
 
-    lat_lon(double lat, double lon) {
-        _lat = lat;
-        _lon = lon;
-    }
+    lat_lon(double lat, double lon): lat(lat), lon(lon) {}
 
-    string print_content() {
-        std::ostringstream strs;
-        strs << _lat;
-        std::string str = strs.str();
-        return str;
-    }
+    web::json::value get_lat_lon() {
+        web::json::value result;
+        result[U("lat")] = json::value(lat);
+        result[U("lon")] = json::value(lon);
+        return result;
+    };
 };
 
 #endif
