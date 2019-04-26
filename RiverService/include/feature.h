@@ -31,11 +31,6 @@ using namespace web::http::client;
 using namespace web::json;
 
 class feature_of_interest {
-    string _name;
-    utility::string_t _id;
-    lat_lon _position;
-    vector<sensor_obs> sensor_history;
-    string _host_url;
 
     chrono::duration<double> update_period = chrono::duration<double>::zero();
     system_clock::time_point last_recieved_data;
@@ -46,12 +41,7 @@ public:
     chrono::duration<double> next_update_time = chrono::duration<double>::zero();
 
     feature_of_interest() {}
-    feature_of_interest(string name, utility::string_t id, lat_lon position, string host_url) {
-        _name = name;
-        _position = position;
-        _id = id;
-        _host_url = host_url;
-    }
+
 
     utility::string_t get_last_checked_time() {
         return utility::conversions::to_string_t(utils::get_time_utc(last_checked_for_updates));
@@ -115,9 +105,9 @@ public:
 
     void update();
 
-    pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time);
+    virtual pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time) = 0;
 
-    void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result);
+    virtual void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result) = 0;
 
     void filter_observations(vector<sensor_obs> observations);
 
@@ -128,6 +118,13 @@ public:
         }
         return flow;
     }
+
+protected:
+    string _name;
+    utility::string_t _id;
+    lat_lon _position;
+    vector<sensor_obs> sensor_history;
+    string_t _host_url;
 };
 
 

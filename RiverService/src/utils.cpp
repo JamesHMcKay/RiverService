@@ -6,7 +6,7 @@ using namespace chrono;
 
 namespace utils {
     string ref_time_str() {
-        return "2019-04-14T01:00:00.000Z";
+        return "2019-04-22T01:00:00.000Z";
     }
 
     time_t my_timegm(tm* _Tm)

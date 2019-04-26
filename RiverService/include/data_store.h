@@ -20,18 +20,18 @@ public:
 };
 
 class data_store {
-    vector<data_source> _data_sources;
+    vector<data_source*> _data_sources;
     chrono::system_clock::time_point last_updated = chrono::system_clock::now();
 
     std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue;
 
 public:
     data_store() {}
-    data_store(vector<data_source> data_sources) {
+    data_store(vector<data_source*> data_sources) {
         _data_sources = data_sources;
     }
 
-    map<utility::string_t, feature_of_interest> feature_map;
+    map<utility::string_t, feature_of_interest*> feature_map;
 
     void update_sources();
 

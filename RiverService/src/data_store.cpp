@@ -10,22 +10,22 @@ using namespace chrono;
 
 void data_store::get_available_features() {
     for (auto &source : _data_sources) {
-        source.get_available_features(feature_map);
+        source->get_available_features(feature_map);
     }
 
     // create the initial priority_queue
     int count = 0;
 
     auto &entry = feature_map[utility::conversions::to_string_t("66405")];
-    entry.update();
-    update_queue.push(&entry);
+    entry->update();
+    update_queue.push(entry);
 
     for (auto &entry : feature_map) {
-       // count++;
-       // if (count < 5) {
-            entry.second.update();
-            update_queue.push(&entry.second);
-       // }
+        count++;
+        if (count < 5) {
+            entry.second->update();
+            update_queue.push(entry.second);
+        }
     }
 
     wcout << "queue is created, the current order is:" << endl;

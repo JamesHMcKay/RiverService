@@ -102,17 +102,17 @@ void handle_request(
 }
 
 json::value get_available_features(data_store &data) {
-    map<utility::string_t, feature_of_interest> feature_map = data.feature_map;
+    map<utility::string_t, feature_of_interest*> feature_map = data.feature_map;
     web::json::value response;
     std::vector<web::json::value> features;
     for (auto const & item : feature_map) {
-        feature_of_interest feature = item.second;
+        feature_of_interest* feature = item.second;
         web::json::value feature_item;
-        feature_item[U("id")] = json::value(feature.get_id());
-        feature_item[U("name")] = json::value::string(feature.get_name());
-        feature_item[U("latest_flow")] = json::value(feature.get_latest_flow());
+        feature_item[U("id")] = json::value(feature->get_id());
+        feature_item[U("name")] = json::value::string(feature->get_name());
+        feature_item[U("latest_flow")] = json::value(feature->get_latest_flow());
 
-        lat_lon position = feature.get_position();
+        lat_lon position = feature->get_position();
         feature_item[U("location")] = position.get_lat_lon();
 
         features.push_back(feature_item);
@@ -143,12 +143,12 @@ json::value get_flow_response(data_store &data, json::value ids) {
             }
             else
             {
-                feature_of_interest feature = pos->second;
-                vector<sensor_obs> flow_history = feature.obs_store.get_as_vector();
+                feature_of_interest* feature = pos->second;
+                vector<sensor_obs> flow_history = feature->obs_store.get_as_vector();
 
-                answer[U("id")] = json::value::string(feature.get_id());
-                answer[U("name")] = json::value::string(feature.get_name());
-                answer[U("last_updated")] = json::value::string(feature.get_last_checked_time());
+                answer[U("id")] = json::value::string(feature->get_id());
+                answer[U("name")] = json::value::string(feature->get_name());
+                answer[U("last_updated")] = json::value::string(feature->get_last_checked_time());
 
                 std::vector<web::json::value> flowOut;
                 for (unsigned int i = 0; i < flow_history.size(); i++) {

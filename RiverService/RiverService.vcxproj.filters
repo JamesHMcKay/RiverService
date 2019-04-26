@@ -42,6 +42,12 @@
     <ClInclude Include="include\health_tracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\niwa_data_source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\niwa_feature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server.cpp">
