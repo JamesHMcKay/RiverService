@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     otago_data_source otago_source;
     tasman_data_source tasman_source;
     vector<data_source*> data_sources;
-    data_sources.push_back(&tasman_source);
+    //data_sources.push_back(&tasman_source);
     data_sources.push_back(&niwa_source);
 
     data_store data(data_sources);
