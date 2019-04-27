@@ -10,6 +10,7 @@
 
 #include "feature.h"
 #include "niwa_feature.h"
+#include "otago_feature.h"
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"
