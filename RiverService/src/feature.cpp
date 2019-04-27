@@ -32,26 +32,3 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
 
     obs_store.remove_old_points(chrono::hours(3));
 }
-
-
-void feature_of_interest::update() {
-    last_checked_for_updates = chrono::system_clock::now();
-    std::vector<sensor_obs> flows;
-
-    string lower_time;
-    if (obs_store.length == 0) {
-        lower_time = utils::ref_time_str();
-    } else {
-        string latest_time = obs_store.get_first()->value.get_time_str();
-        int time_str_length = latest_time.size();
-        string time_zone = latest_time.substr(time_str_length - 5, time_str_length - 1);
-        lower_time = utils::get_time_utc(utils::convert_time_str(latest_time), time_zone);
-    }
-
-    string flow_res_string = get_flow_data(get_id(), lower_time).get();
-    pugi::xml_document doc;
-    pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
-    wcout << "got flow responses" << endl;
-    process_flow_response(doc, flows);
-    filter_observations(flows);
-}

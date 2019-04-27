@@ -157,13 +157,12 @@
     <ClInclude Include="include\health_tracker.h" />
     <ClInclude Include="include\lat_lon.h" />
     <ClInclude Include="include\niwa_data_source.h" />
-    <ClInclude Include="include\niwa_feature.h" />
     <ClInclude Include="include\observation_store.h" />
     <ClInclude Include="include\otago_data_source.h" />
-    <ClInclude Include="include\otago_feature.h" />
     <ClInclude Include="include\sensor_obs.h" />
     <ClInclude Include="include\server.h" />
     <ClInclude Include="include\data_store.h" />
+    <ClInclude Include="include\tasman_data_source.h" />
     <ClInclude Include="include\utils.h" />
   </ItemGroup>
   <ItemGroup>

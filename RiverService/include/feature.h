@@ -31,36 +31,63 @@ using namespace web::http::client;
 using namespace web::json;
 
 class feature_of_interest {
-
     chrono::duration<double> update_period = chrono::duration<double>::zero();
+
     system_clock::time_point last_recieved_data;
+
     system_clock::time_point last_checked_for_updates;
+
+    string _name;
+
+    utility::string_t _id;
+
+    lat_lon _position;
+
+    vector<sensor_obs> sensor_history;
+
+    string_t _host_url;
+
+    string _data_source_name;
 
 public:
     observation_store obs_store;
+
     chrono::duration<double> next_update_time = chrono::duration<double>::zero();
 
     feature_of_interest() {}
+    feature_of_interest(string name, utility::string_t id, lat_lon position, string data_source_name) {
+        _name = name;
+        _position = position;
+        _id = id;
+        _data_source_name = data_source_name;
+    }
 
+    void set_last_checked_for_update_time() {
+        last_checked_for_updates = chrono::system_clock::now();
+    }
+
+    utility::string_t get_data_source_name() {
+        return utility::conversions::to_string_t(_data_source_name);
+    }
 
     utility::string_t get_last_checked_time() {
         return utility::conversions::to_string_t(utils::get_time_utc(last_checked_for_updates));
     }
 
-    void add_sensor_obs(vector<sensor_obs> observations) {
-        int num_points = observations.size();
-        int existing_points = sensor_history.size();
-        if (num_points > 0 && existing_points > 0) {
-            cout << "UPDATE DATA RECIEVED" << endl;
-            update_period = system_clock::now() - last_recieved_data;
-        }
-        if (num_points > 0) {
-            last_recieved_data = system_clock::now();
-        }
-        for (int i = 0; i < num_points; i++) {
-            sensor_history.insert(sensor_history.begin(), observations[i]);
-        }
-    }
+    //void add_sensor_obs(vector<sensor_obs> observations) {
+    //    int num_points = observations.size();
+    //    int existing_points = sensor_history.size();
+    //    if (num_points > 0 && existing_points > 0) {
+    //        cout << "UPDATE DATA RECIEVED" << endl;
+    //        update_period = system_clock::now() - last_recieved_data;
+    //    }
+    //    if (num_points > 0) {
+    //        last_recieved_data = system_clock::now();
+    //    }
+    //    for (int i = 0; i < num_points; i++) {
+    //        sensor_history.insert(sensor_history.begin(), observations[i]);
+    //    }
+    //}
 
     utility::string_t get_id() {
         return _id;
@@ -103,12 +130,6 @@ public:
         cout << "setting update time, latest flow = " << latest_point.get_flow() << " penultimate flow = " << penultimate_point.get_flow() << endl;
     }
 
-    void update();
-
-    virtual pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time) = 0;
-
-    virtual void process_flow_response(pugi::xml_node responses, std::vector<sensor_obs> &result) = 0;
-
     void filter_observations(vector<sensor_obs> observations);
 
     double get_latest_flow() {
@@ -119,12 +140,19 @@ public:
         return flow;
     }
 
-protected:
-    string _name;
-    utility::string_t _id;
-    lat_lon _position;
-    vector<sensor_obs> sensor_history;
-    string_t _host_url;
+    string get_lower_time() {
+        string lower_time;
+        if (obs_store.length == 0) {
+            lower_time = utils::ref_time_str();
+        }
+        else {
+            string latest_time = obs_store.get_first()->value.get_time_str();
+            int time_str_length = latest_time.size();
+            string time_zone = latest_time.substr(time_str_length - 5, time_str_length - 1);
+            lower_time = utils::get_time_utc(utils::convert_time_str(latest_time), time_zone);
+        }
+        return lower_time;
+    }
 };
 
 

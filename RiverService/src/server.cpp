@@ -114,14 +114,15 @@ json::value get_available_features(data_store &data) {
 
         lat_lon position = feature->get_position();
         feature_item[U("location")] = position.get_lat_lon();
+        feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
 
         features.push_back(feature_item);
     }
     response[U("features")] = web::json::value::array(features);
 
-    string last_update_time = data.get_last_updated_time_str();
-    string_t last_update_time_t = utility::conversions::to_string_t(last_update_time);
-    response[U("last_update_time")] = json::value(last_update_time_t);
+    //string last_update_time = data.get_last_updated_time_str();
+    //string_t last_update_time_t = utility::conversions::to_string_t(last_update_time);
+    //response[U("last_update_time")] = json::value(last_update_time_t);
 
     return response;
 }
@@ -223,7 +224,7 @@ void server_session::create_session(data_store &data, utility::string_t port, he
             .open()
             .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
             .wait();
-        data.get_available_features();
+        data.set_up_feature_map();
         while (true) {
             // return a value that is the time until the next update is required
             // for use in the sleep function

@@ -9,8 +9,6 @@
 #endif
 
 #include "feature.h"
-#include "niwa_feature.h"
-#include "otago_feature.h"
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"
@@ -26,21 +24,53 @@
 
 using namespace std;
 
+class OrderUpdateQueue {
+public:
+    bool operator()(
+        feature_of_interest* first,
+        feature_of_interest* second) {
+        return (first->next_update_time) < (second->next_update_time);
+    }
+};
+
+
 class data_source {
 public:
+    string data_source_name;
+
     virtual uri_builder get_source_uri() = 0;
 
-    virtual void process_feature_response(pugi::xml_node responses, map<utility::string_t, feature_of_interest*> &features_map) = 0;
+    virtual void process_feature_response(pugi::xml_node responses) = 0;
 
-    virtual void get_all_features(map<utility::string_t, feature_of_interest*> &features_map) = 0;
+    virtual void get_all_features() = 0;
+
+    virtual void process_flow_response(pugi::xml_node doc, std::vector<sensor_obs> &result) = 0;
+
+    virtual pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time) = 0;
 
     pplx::task<string> get_features_task();
 
-    void get_available_features(map<utility::string_t, feature_of_interest*> &features_map);
+    void update_sources();
+
+    void update_feature(feature_of_interest* feature_to_update);
+
+    map<utility::string_t, feature_of_interest*> get_available_features();
+
+    string get_last_updated_time_str() {
+        std::time_t time = std::chrono::system_clock::to_time_t(last_updated);
+        return ctime(&time);
+    }
 
 protected:
     bool initiliased;
+
     string_t _host_url;
+
+    map<utility::string_t, feature_of_interest*> feature_map;
+
+    std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue;
+
+    chrono::system_clock::time_point last_updated = chrono::system_clock::now();
 };
 
 #endif
