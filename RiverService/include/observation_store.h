@@ -68,11 +68,13 @@ public:
     vector<sensor_obs> get_as_vector() {
         vector<sensor_obs> result;
         observation<sensor_obs>* node = first;
-        while (node->prev != NULL) {
+        while (node != NULL && node->prev != NULL) {
             result.push_back(node->value);
             node = node->prev;
         }
-        result.push_back(node->value);
+        if (node != NULL) {
+            result.push_back(node->value);
+        }
         return result;
     }
 
