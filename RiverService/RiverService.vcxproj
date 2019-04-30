@@ -155,6 +155,7 @@
     <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\feature.h" />
     <ClInclude Include="include\health_tracker.h" />
+    <ClInclude Include="include\horizons_data_source.h" />
     <ClInclude Include="include\lat_lon.h" />
     <ClInclude Include="include\niwa_data_source.h" />
     <ClInclude Include="include\observation_store.h" />

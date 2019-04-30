@@ -1,16 +1,16 @@
-#ifndef OTAGO_DATA_SOURCE_H
-#define OTAGO_DATA_SOURCE_H
+#ifndef HORIZONS_DATA_SOURCE_H
+#define HORIZONS_DATA_SOURCE_H
 
 #include "data_source.h"
 
 using namespace std;
 
-class otago_data_source : public data_source {
+class horizons_data_source : public data_source {
 public:
-    otago_data_source() {
-        _host_url = utility::conversions::to_string_t("http://gisdata.orc.govt.nz/Hilltop/Global.hts");
+    horizons_data_source() {
+        _host_url = utility::conversions::to_string_t("http://hilltopserver.horizons.govt.nz/data.hts");
         initiliased = false;
-        data_source_name = "Otago Regional Council";
+        data_source_name = "Horizons Regional Council";
     }
 
     uri_builder get_source_uri() {

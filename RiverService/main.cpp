@@ -13,6 +13,7 @@
 #include "niwa_data_source.h"
 #include "otago_data_source.h"
 #include "tasman_data_source.h"
+#include "horizons_data_source.h"
 
 #include <iostream>
 #include <string>
@@ -38,8 +39,10 @@ int main(int argc, char *argv[]) {
     niwa_data_source niwa_source;
     otago_data_source otago_source;
     tasman_data_source tasman_source;
+    horizons_data_source horizons_source;
     vector<data_source*> data_sources;
-    //data_sources.push_back(&tasman_source);
+    data_sources.push_back(&tasman_source);
+    data_sources.push_back(&horizons_source);
     data_sources.push_back(&niwa_source);
 
     data_store data(data_sources);
