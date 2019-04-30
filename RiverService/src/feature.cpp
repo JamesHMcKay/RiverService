@@ -30,5 +30,5 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
         set_update_time(obs[num_of_obs - 1], obs[num_of_obs - 2]);
     }
 
-    obs_store.remove_old_points(chrono::hours(3));
+    obs_store.remove_old_points(chrono::hours(720));
 }
