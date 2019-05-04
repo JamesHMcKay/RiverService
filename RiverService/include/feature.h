@@ -74,21 +74,6 @@ public:
         return utility::conversions::to_string_t(utils::get_time_utc(last_checked_for_updates));
     }
 
-    //void add_sensor_obs(vector<sensor_obs> observations) {
-    //    int num_points = observations.size();
-    //    int existing_points = sensor_history.size();
-    //    if (num_points > 0 && existing_points > 0) {
-    //        cout << "UPDATE DATA RECIEVED" << endl;
-    //        update_period = system_clock::now() - last_recieved_data;
-    //    }
-    //    if (num_points > 0) {
-    //        last_recieved_data = system_clock::now();
-    //    }
-    //    for (int i = 0; i < num_points; i++) {
-    //        sensor_history.insert(sensor_history.begin(), observations[i]);
-    //    }
-    //}
-
     utility::string_t get_id() {
         return _id;
     }
@@ -127,7 +112,7 @@ public:
 
         next_update_time = current_time_ref + max(absolute_update_period, update_period);// + chrono::seconds(120);
 
-        cout << "setting update time, latest flow = " << latest_point.get_flow() << " penultimate flow = " << penultimate_point.get_flow() << endl;
+        cout << "setting update time, latest flow = " << latest_point.get_value() << " penultimate flow = " << penultimate_point.get_value() << endl;
     }
 
     void filter_observations(vector<sensor_obs> observations);
@@ -135,7 +120,7 @@ public:
     double get_latest_flow() {
         double flow = 0;
         if (obs_store.get_first() != NULL) {
-            flow = obs_store.get_first()->value.get_flow();
+            flow = obs_store.get_first()->value.get_value();
         }
         return flow;
     }

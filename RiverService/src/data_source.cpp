@@ -3,33 +3,6 @@
 using namespace std;
 using namespace Concurrency;
 
-pplx::task<string> data_source::get_features_task() {
-    web::http::client::http_client_config client_config;
-    client_config.set_timeout(std::chrono::seconds(5));
-
-    http_client client(_host_url, client_config);
-
-    auto path_query_fragment = get_source_uri().to_string();
-
-    return client.request(methods::GET, path_query_fragment).then([](http_response response) {
-        string result = "";
-        if (response.status_code() == status_codes::OK) {
-            std::wostringstream stream;
-            std::wcout << stream.str();
-            stream.str(std::wstring());
-            std::wcout << stream.str();
-            auto bodyStream = response.body();
-            streams::stringstreambuf sbuffer;
-            auto& target = sbuffer.collection();
-            bodyStream.read_to_end(sbuffer).get();
-            stream.str(std::wstring());
-            std::wcout << stream.str();
-            result = target.c_str();
-        }
-        return result;
-    });
-}
-
 map<utility::string_t, feature_of_interest*> data_source::get_available_features() {
     if (!initiliased) {
         initiliased = true;
@@ -41,7 +14,7 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
 
     for (auto &entry : feature_map) {
         count++;
-        //if (count < 10) {
+        //if (count < 5) {
         update_feature(entry.second);
         update_queue.push(entry.second);
         //}
@@ -98,7 +71,7 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
 
     string lower_time = feature_to_update->get_lower_time();
 
-    string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time).get();
+    string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time);
     pugi::xml_document doc;
     pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
     wcout << "got flow responses" << endl;

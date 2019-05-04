@@ -44,6 +44,8 @@ namespace utils {
     system_clock::time_point get_time_point_utc(string latest_time);
 
     string get_time_utc(chrono::system_clock::time_point time, string time_zone_diff = "0");
+
+    pplx::task<string> get_xml_response(string_t host_url, uri_builder uri);
 }
 
 #endif

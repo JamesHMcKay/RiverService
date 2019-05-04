@@ -8,7 +8,8 @@ using namespace std;
 class niwa_data_source: public data_source {
 public:
     niwa_data_source() {
-        _host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
+        //_host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
+        _host_url = utility::conversions::to_string_t("http://localhost:8080");
         initiliased = false;
         data_source_name = "NIWA";
     }
@@ -44,9 +45,10 @@ public:
     void get_all_features() {
         std::vector<unique_ptr<feature_of_interest>> features;
         std::wcout << L"Getting features..." << std::endl;
-        string res_string = get_features_task().get();
+        string res_string = utils::get_xml_response(_host_url, get_source_uri()).get();
         pugi::xml_document doc;
         pugi::xml_parse_result response_all = doc.load_string(res_string.c_str());
+        std::wcout << "got response = " << res_string.c_str() << std::endl;
 
         pugi::xml_node responses = doc.child("sos:GetFeatureOfInterestResponse");
 
@@ -68,7 +70,7 @@ public:
     };
 
 
-    pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time)
+    string get_flow_data(utility::string_t feature_id, string lower_time)
     {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
         wcout << "Getting flow data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
@@ -80,28 +82,8 @@ public:
         builder.append_query(U("FeatureOfInterest"), feature_id);
         builder.append_query(U("ObservedProperty"), U("Discharge"));
         builder.append_query(U("TemporalFilter"), utility::conversions::to_string_t(time_filter));
-        auto path_query_fragment = builder.to_string();
-
-        return client.request(methods::GET, path_query_fragment).then([](http_response response)
-        {
-            std::wostringstream stream;
-            std::wcout << stream.str();
-
-            stream.str(std::wstring());
-            std::wcout << stream.str();
-
-            auto bodyStream = response.body();
-            Concurrency::streams::stringstreambuf sbuffer;
-            auto& target = sbuffer.collection();
-
-            bodyStream.read_to_end(sbuffer).get();
-
-            stream.str(std::wstring());
-            std::wcout << stream.str();
-
-            string result = target.c_str();
-            return result;
-        });
+        string res_string = utils::get_xml_response(_host_url, builder).get();
+        return res_string;
     }
 };
 

@@ -33,16 +33,12 @@ public:
         return _time;
     }
 
-    double get_flow() {
+    double get_value() {
         return _value;
     };
 
-    string print_content() {
-        std::ostringstream strs;
-        strs << _value;
-        std::string str = strs.str();
-        //cout << "value " << _value << endl;
-        return str;
+    string get_units() {
+        return _units;
     }
 };
 

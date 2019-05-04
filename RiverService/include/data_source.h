@@ -46,9 +46,7 @@ public:
 
     virtual void process_flow_response(pugi::xml_node doc, std::vector<sensor_obs> &result) = 0;
 
-    virtual pplx::task<string> get_flow_data(utility::string_t feature_id, string lower_time) = 0;
-
-    pplx::task<string> get_features_task();
+    virtual string get_flow_data(utility::string_t feature_id, string lower_time) = 0;
 
     void update_sources();
 

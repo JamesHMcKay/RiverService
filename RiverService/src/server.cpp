@@ -155,7 +155,7 @@ json::value get_flow_response(data_store &data, json::value ids) {
                 for (unsigned int i = 0; i < flow_history.size(); i++) {
                     sensor_obs item = flow_history[i];
                     web::json::value vehicle;
-                    vehicle[U("flow")] = json::value(item.get_flow());
+                    vehicle[U("flow")] = json::value(item.get_value());
                     vehicle[U("time")] = json::value::string(item.get_time());
                     flowOut.push_back(vehicle);
                 }
@@ -228,7 +228,7 @@ void server_session::create_session(data_store &data, utility::string_t port, he
         while (true) {
             // return a value that is the time until the next update is required
             // for use in the sleep function
-            data.update_sources();
+            //data.update_sources();
             std::this_thread::sleep_for(std::chrono::minutes(30));
         }
     }
