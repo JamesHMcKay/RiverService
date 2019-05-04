@@ -11,9 +11,7 @@
 #include "data_store.h"
 #include "health_tracker.h"
 #include "niwa_data_source.h"
-#include "otago_data_source.h"
-#include "tasman_data_source.h"
-#include "horizons_data_source.h"
+#include "hilltop_data_source.h"
 
 #include <iostream>
 #include <string>
@@ -37,12 +35,14 @@ int main(int argc, char *argv[]) {
     health_tracker health;
 
     niwa_data_source niwa_source;
-    otago_data_source otago_source;
-    tasman_data_source tasman_source;
-    horizons_data_source horizons_source;
+    hilltop_data_source otago_source("http://gisdata.orc.govt.nz/Hilltop/Global.hts", "Otago Regional Council");
+    hilltop_data_source tasman_source("http://envdata.tasman.govt.nz/anything.hts", "Tasman Regional Council");
+    hilltop_data_source horizons_source("http://hilltopserver.horizons.govt.nz/data.hts", "Horizons Regional Council");
+
     vector<data_source*> data_sources;
-    //data_sources.push_back(&tasman_source);
-    //data_sources.push_back(&horizons_source);
+    data_sources.push_back(&tasman_source);
+    data_sources.push_back(&horizons_source);
+    //data_sources.push_back(&otago_source);
     data_sources.push_back(&niwa_source);
 
     data_store data(data_sources);

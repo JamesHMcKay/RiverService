@@ -8,8 +8,7 @@ using namespace std;
 class niwa_data_source: public data_source {
 public:
     niwa_data_source() {
-        //_host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
-        _host_url = utility::conversions::to_string_t("http://localhost:8080");
+        _host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
         initiliased = false;
         data_source_name = "NIWA";
     }

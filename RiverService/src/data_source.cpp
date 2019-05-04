@@ -14,10 +14,10 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
 
     for (auto &entry : feature_map) {
         count++;
-        //if (count < 5) {
+        if (count < 10) {
         update_feature(entry.second);
         update_queue.push(entry.second);
-        //}
+        }
     }
 
     wcout << "queue is created, the current order is:" << endl;
@@ -66,6 +66,9 @@ void data_source::update_sources() {
 }
 
 void data_source::update_feature(feature_of_interest* feature_to_update) {
+    // this needs to be generalised to handle features of different, or multiple types
+    // perhaps just iterate through for each type since multiple requests are required
+    // give each feature a list of types
     feature_to_update->set_last_checked_for_update_time();
     std::vector<sensor_obs> flows;
 
@@ -75,6 +78,8 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     pugi::xml_document doc;
     pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
     wcout << "got flow responses" << endl;
+    // add a type or units parameter
     process_flow_response(doc, flows);
+    // generalise this function to type a "type of obs" parameter
     feature_to_update->filter_observations(flows);
 }

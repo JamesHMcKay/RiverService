@@ -45,13 +45,7 @@
     <ClInclude Include="include\niwa_data_source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\otago_data_source.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tasman_data_source.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\horizons_data_source.h">
+    <ClInclude Include="include\hilltop_data_source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

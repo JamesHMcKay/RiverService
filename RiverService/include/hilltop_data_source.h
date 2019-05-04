@@ -1,16 +1,16 @@
-#ifndef TASMAN_DATA_SOURCE_H
-#define TASMAN_DATA_SOURCE_H
+#ifndef HILLTOP_DATA_SOURCE_H
+#define HILLTOP_DATA_SOURCE_H
 
 #include "data_source.h"
 
 using namespace std;
 
-class tasman_data_source : public data_source {
+class hilltop_data_source : public data_source {
 public:
-    tasman_data_source() {
-        _host_url = utility::conversions::to_string_t("http://envdata.tasman.govt.nz/anything.hts");
+    hilltop_data_source(string host_url, string source_name) {
+        _host_url = utility::conversions::to_string_t(host_url);
         initiliased = false;
-        data_source_name = "Tasman District Council";
+        data_source_name = source_name;
     }
 
     uri_builder get_source_uri() {
@@ -61,6 +61,8 @@ public:
         builder.append_query(U("service"), U("SOS"));
         builder.append_query(U("request"), U("GetObservation"));
         builder.append_query(U("FeatureOfInterest"), feature_id);
+
+        // make Flow a parameter
         builder.append_query(U("ObservedProperty"), U("Flow"));
         builder.append_query(U("TemporalFilter"), utility::conversions::to_string_t(time_filter));
         string res_string = utils::get_xml_response(_host_url, builder).get();
