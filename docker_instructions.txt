@@ -1,0 +1,19 @@
+To get the CI with gitlab I first had to get the docker image on to Heroku.  The steps I followed were roughly those outlined below (copied from terminal history sometime after actually doing it).
+
+
+docker-compose build
+
+(Check the image is there)
+docker images
+
+heroku container:login
+
+heroku create
+
+(The second command here might be the best to use, it's possible the first one didn't work but I'm not sure if it is important)
+heroku container:release riverservice_web:latest --app riverservice
+heroku container:release registry.heroku.com/riverservice/riverservice_web --app riverservice 
+
+heroku container:push --app riverservice --context-path . web
+
+heroku container:release --app riverservice web
