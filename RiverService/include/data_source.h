@@ -9,6 +9,7 @@
 #endif
 
 #include "feature.h"
+#include "observation_type.h"
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"
@@ -38,15 +39,13 @@ class data_source {
 public:
     string data_source_name;
 
-    virtual uri_builder get_source_uri() = 0;
-
-    virtual void process_feature_response(pugi::xml_node responses) = 0;
+    virtual uri_builder get_source_uri(string obs_type = "") = 0;
 
     virtual void get_all_features() = 0;
 
-    virtual void process_flow_response(pugi::xml_node doc, std::vector<sensor_obs> &result) = 0;
+    virtual void process_flow_response(pugi::xml_node doc, std::map<string, sensor_obs> &result, observable type) = 0;
 
-    virtual string get_flow_data(utility::string_t feature_id, string lower_time) = 0;
+    virtual string get_flow_data(utility::string_t feature_id, string lower_time, string type) = 0;
 
     void update_sources();
 
@@ -69,6 +68,8 @@ protected:
     std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue;
 
     chrono::system_clock::time_point last_updated = chrono::system_clock::now();
+
+    vector<observation_type> _observation_types;
 };
 
 #endif

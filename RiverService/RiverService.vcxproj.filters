@@ -48,6 +48,12 @@
     <ClInclude Include="include\hilltop_data_source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\observable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\observation_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server.cpp">

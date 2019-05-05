@@ -11,13 +11,14 @@ public:
         _host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
         initiliased = false;
         data_source_name = "NIWA";
+        _observation_types.push_back(observation_type(flow, cumecs, "Discharge"));
     }
 
-    uri_builder get_source_uri() {
+    uri_builder get_source_uri(string obs_type = "") {
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
         builder.append_query(U("version"), U("2.0.0"));
-        builder.append_query(U("request"), U("GetFeatureOfInterest"));
+        builder.append_query(U("request"), utility::conversions::to_string_t(obs_type));
         return builder;
     };
 
@@ -41,21 +42,52 @@ public:
         }
     };
 
+    void process_data_availability_response(pugi::xml_node responses) {
+        for (pugi::xml_node item : responses.children("gda:dataAvailabilityMember")) {
+            pugi::xml_node feature_id = item.child("gda:featureOfInterest");
+            string id = feature_id.first_attribute().value();
+            utility::string_t id_t = utility::conversions::to_string_t(id);
+
+            pugi::xml_node data_type = item.child("gda:observedProperty");
+            string type = data_type.first_attribute().value();
+
+            auto pos = feature_map.find(id_t);
+            if (pos == feature_map.end()) {
+                wcout << "FEATURE NOT FOUND" << endl;
+            }
+            else {
+                observable obs_type = utils::string_to_observable(type);
+                feature_map[id_t]->add_observation_type(observation_type(
+                    obs_type,
+                    utils::type_to_unit_niwa(obs_type),
+                    type
+                ));
+            }
+        }
+    }
+
     void get_all_features() {
         std::vector<unique_ptr<feature_of_interest>> features;
-        std::wcout << L"Getting features..." << std::endl;
-        string res_string = utils::get_xml_response(_host_url, get_source_uri()).get();
+        std::wcout << "Getting features..." << std::endl;
+        string res_string = utils::get_xml_response(_host_url, get_source_uri("GetFeatureOfInterest")).get();
         pugi::xml_document doc;
         pugi::xml_parse_result response_all = doc.load_string(res_string.c_str());
-        std::wcout << "got response = " << res_string.c_str() << std::endl;
 
         pugi::xml_node responses = doc.child("sos:GetFeatureOfInterestResponse");
 
         wcout << "got responses" << endl;
         process_feature_response(responses);
+        // get data availability for these features
+        res_string = utils::get_xml_response(_host_url, get_source_uri("GetDataAvailability")).get();
+        pugi::xml_document doc_data_avail;
+        pugi::xml_parse_result response_availability = doc_data_avail.load_string(res_string.c_str());
+
+        pugi::xml_node responses_availability = doc_data_avail.child("gda:GetDataAvailabilityResponse");
+
+        process_data_availability_response(responses_availability);
     };
 
-    void process_flow_response(pugi::xml_node doc, std::vector<sensor_obs> &result) {
+    void process_flow_response(pugi::xml_node doc, std::map<string, sensor_obs> &result, observable type) {
         pugi::xml_node responses = doc.child("sos:GetObservationResponse").child("sos:observationData").child("om:OM_Observation").child("om:result").child("wml2:MeasurementTimeseries");
         for (pugi::xml_node item : responses.children("wml2:point")) {
             pugi::xml_node feature = item.child("wml2:MeasurementTVP");
@@ -63,13 +95,19 @@ public:
             string time = feature.child("wml2:time").text().get();
 
             double value_num = atof(value.c_str());
-            sensor_obs new_flow(value_num, time, "units");
-            result.push_back(new_flow);
+
+            auto pos = result.find(time);
+            sensor_obs new_flow(value_num, time, type);
+            if (pos == result.end()) {
+                result[time] = new_flow;
+            } else {
+                result[time] = pos->second + new_flow;
+            }
         }
     };
 
 
-    string get_flow_data(utility::string_t feature_id, string lower_time)
+    string get_flow_data(utility::string_t feature_id, string lower_time, string type)
     {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
         wcout << "Getting flow data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
@@ -79,7 +117,8 @@ public:
         builder.append_query(U("version"), U("2.0.0"));
         builder.append_query(U("request"), U("GetObservation"));
         builder.append_query(U("FeatureOfInterest"), feature_id);
-        builder.append_query(U("ObservedProperty"), U("Discharge"));
+        string_t type_of_obs = utility::conversions::to_string_t(type);
+        builder.append_query(U("ObservedProperty"), type_of_obs);
         builder.append_query(U("TemporalFilter"), utility::conversions::to_string_t(time_filter));
         string res_string = utils::get_xml_response(_host_url, builder).get();
         return res_string;

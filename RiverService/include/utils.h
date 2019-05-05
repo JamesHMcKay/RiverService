@@ -24,6 +24,7 @@
 #include <iomanip>
 
 #include "pugixml.hpp"
+#include "observable.h"
 
 using namespace ::pplx;
 using namespace utility;
@@ -46,6 +47,12 @@ namespace utils {
     string get_time_utc(chrono::system_clock::time_point time, string time_zone_diff = "0");
 
     pplx::task<string> get_xml_response(string_t host_url, uri_builder uri);
+
+    string observable_to_string(observable type);
+
+    observable string_to_observable(string type);
+
+    unit type_to_unit_niwa(observable type);
 }
 
 #endif

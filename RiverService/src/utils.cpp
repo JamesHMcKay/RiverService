@@ -6,7 +6,7 @@ using namespace chrono;
 
 namespace utils {
     string ref_time_str() {
-        return "2019-04-04T01:00:00.000Z";
+        return "2019-04-25T01:00:00.000Z";
     }
 
     time_t my_timegm(tm* _Tm)
@@ -80,5 +80,42 @@ namespace utils {
             }
             return result;
         });
+    }
+
+    string observable_to_string(observable type) {
+        string result;
+        switch (type)
+        {
+            case flow: result = "flow"; break;
+            case stage_height: result = "stage_height"; break;
+            case temperature: result = "temperature"; break;
+            default: result = "value";
+        }
+        return result;
+    }
+
+    observable string_to_observable(string type) {
+        if (type == "Discharge") {
+            return flow;
+        }
+        if (type == "pH") {
+            return pH;
+        }
+        if (type == "Height of Gauge (River Stage)") {
+            return stage_height;
+        }
+        return flow;
+    }
+
+    unit type_to_unit_niwa(observable type) {
+        unit result;
+        switch (type)
+        {
+        case flow: result = cumecs; break;
+        case stage_height: result = metres; break;
+        case pH: result = none;
+        default: result = none;
+        }
+        return result;
     }
 }

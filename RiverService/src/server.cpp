@@ -101,22 +101,41 @@ void handle_request(
     request.reply(status_codes::OK, answer);
 }
 
-json::value get_available_features(data_store &data) {
+json::value get_available_features(data_store &data, vector<string_t> requested_types) {
     map<utility::string_t, feature_of_interest*> feature_map = data.feature_map;
     web::json::value response;
     std::vector<web::json::value> features;
     for (auto const & item : feature_map) {
+        bool passed_filter = false;
         feature_of_interest* feature = item.second;
         web::json::value feature_item;
         feature_item[U("id")] = json::value(feature->get_id());
         feature_item[U("name")] = json::value::string(feature->get_name());
-        feature_item[U("latest_flow")] = json::value(feature->get_latest_flow());
 
         lat_lon position = feature->get_position();
         feature_item[U("location")] = position.get_lat_lon();
         feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
 
-        features.push_back(feature_item);
+        vector<observation_type> observation_types = feature->get_observation_types();
+        std::vector<web::json::value> obs_types;
+        sensor_obs latest_values = feature->get_latest_sensor_obs();
+        for (unsigned int i = 0; i < observation_types.size(); i++) {
+            web::json::value obs_item;
+            auto& type = observation_types[i];
+            obs_item[U("type")] = json::value(type.get_type());
+            obs_item[U("units")] = json::value(type.get_units());
+            obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
+            obs_types.push_back(obs_item);
+            for (auto &requested_type : requested_types) {
+                if (requested_type == type.get_type()) {
+                    passed_filter = true;
+                }
+            }
+        }
+        if (passed_filter) {
+            feature_item[U("observables")] = web::json::value::array(obs_types);
+            features.push_back(feature_item);
+        }
     }
     response[U("features")] = web::json::value::array(features);
 
@@ -140,7 +159,7 @@ json::value get_flow_response(data_store &data, json::value ids) {
 
             if (pos == data.feature_map.end())
             {
-                answer = get_available_features(data);
+                answer[U("response")] = json::value::string(U("no feature with that id"));
             }
             else
             {
@@ -152,12 +171,21 @@ json::value get_flow_response(data_store &data, json::value ids) {
                 answer[U("last_updated")] = json::value::string(feature->get_last_checked_time());
 
                 std::vector<web::json::value> flowOut;
+                vector<observation_type> observation_types = feature->get_observation_types();
+
+
                 for (unsigned int i = 0; i < flow_history.size(); i++) {
                     sensor_obs item = flow_history[i];
-                    web::json::value vehicle;
-                    vehicle[U("flow")] = json::value(item.get_value());
-                    vehicle[U("time")] = json::value::string(item.get_time());
-                    flowOut.push_back(vehicle);
+                    web::json::value history_item;
+                    vector<pair<double, observable>> values = item.get_value();
+                    // note that this is dangerous, if length of values and obs types are different will get wrong units and types on values
+                    for (unsigned int i = 0; i < values.size(); i++) {
+                        string_t type = utility::conversions::to_string_t(utils::observable_to_string(values[i].second));
+                        history_item[type] = json::value(values[i].first);
+                    }
+
+                    history_item[U("time")] = json::value::string(item.get_time());
+                    flowOut.push_back(history_item);
                 }
                 answer[U("flows")] = web::json::value::array(flowOut);
             }
@@ -182,7 +210,15 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
             }
 
             if (action_str == utility::conversions::to_string_t("get_features")) {
-                answer = get_available_features(data);
+                json::value filters = jvalue.at(U("filters"));
+                vector<string_t> requested_types;
+
+                for (auto const & e : filters.as_array()) {
+                    if (e.is_string()) {
+                        requested_types.push_back(e.as_string());
+                    }
+                }
+                answer = get_available_features(data, requested_types);
             }
 
             http_response response(status_codes::OK);

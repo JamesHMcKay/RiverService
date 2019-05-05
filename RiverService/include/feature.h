@@ -6,6 +6,7 @@
 #include "sensor_obs.h"
 #include "utils.h"
 #include "observation_store.h"
+#include "observation_type.h"
 
 #include "cpprest/containerstream.h"
 #include "cpprest/filestream.h"
@@ -49,17 +50,25 @@ class feature_of_interest {
 
     string _data_source_name;
 
+    vector<observation_type> _observation_types;
+
 public:
     observation_store obs_store;
 
     chrono::duration<double> next_update_time = chrono::duration<double>::zero();
 
     feature_of_interest() {}
-    feature_of_interest(string name, utility::string_t id, lat_lon position, string data_source_name) {
+    feature_of_interest(string name, utility::string_t id, lat_lon position, string data_source_name, vector<observation_type> observation_types = {}) {
         _name = name;
         _position = position;
         _id = id;
         _data_source_name = data_source_name;
+        _observation_types = observation_types;
+    }
+
+
+    void add_observation_type(observation_type type) {
+        _observation_types.push_back(type);
     }
 
     void set_last_checked_for_update_time() {
@@ -112,17 +121,25 @@ public:
 
         next_update_time = current_time_ref + max(absolute_update_period, update_period);// + chrono::seconds(120);
 
-        cout << "setting update time, latest flow = " << latest_point.get_value() << " penultimate flow = " << penultimate_point.get_value() << endl;
+       // cout << "setting update time, latest flow = " << latest_point.get_value() << " penultimate flow = " << penultimate_point.get_value() << endl;
     }
 
     void filter_observations(vector<sensor_obs> observations);
 
-    double get_latest_flow() {
-        double flow = 0;
+    vector<pair<double, observable>> get_latest_values() {
+        vector<pair<double, observable>> flow;
         if (obs_store.get_first() != NULL) {
             flow = obs_store.get_first()->value.get_value();
         }
         return flow;
+    }
+
+    sensor_obs get_latest_sensor_obs () {
+        sensor_obs result;
+        if (obs_store.get_first() != NULL) {
+            result = obs_store.get_first()->value;
+        }
+        return result;
     }
 
     string get_lower_time() {
@@ -137,6 +154,10 @@ public:
             lower_time = utils::get_time_utc(utils::convert_time_str(latest_time), time_zone);
         }
         return lower_time;
+    }
+
+    vector<observation_type> get_observation_types() {
+        return _observation_types;
     }
 };
 
