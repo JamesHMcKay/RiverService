@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
     hilltop_data_source horizons_source("http://hilltopserver.horizons.govt.nz/data.hts", "Horizons Regional Council");
 
     vector<data_source*> data_sources;
-    //data_sources.push_back(&tasman_source);
-    //data_sources.push_back(&horizons_source);
+    data_sources.push_back(&tasman_source);
+    data_sources.push_back(&horizons_source);
     //data_sources.push_back(&otago_source);
     data_sources.push_back(&niwa_source);
 

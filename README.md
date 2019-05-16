@@ -1,7 +1,7 @@
 # RiverService
 This is a web service designed to aggregate flow and metadata delivered in SOS format for New Zealand rivers.
 
-For current testing flow data is only updated every 30 minutes, and any data older than three hours is discarded.
+For current testing flow data is only updated every 120 minutes, and any data older than three hours is discarded.
 
 Check current status here: http://riverservice.herokuapp.com/
 
@@ -9,11 +9,12 @@ Check current status here: http://riverservice.herokuapp.com/
 
 All requests are POST requests with header "Content-Type:application/json" and body sent as raw JSON.
 
-* Get all available gauges with metadata and latest flow
+* Get all available features that have flow and/or stage_height measurments
 
 ```javascript
 {
-	"action": "get_features"
+	"action": "get_features",
+	"filters": ["flow", "stage_height"],
 }
 ```
 
