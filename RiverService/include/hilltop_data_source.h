@@ -7,11 +7,11 @@ using namespace std;
 
 class hilltop_data_source : public data_source {
 public:
-    hilltop_data_source(string host_url, string source_name) {
+    hilltop_data_source(string host_url, string source_name, unit flow_units = cumecs) {
         _host_url = utility::conversions::to_string_t(host_url);
         initiliased = false;
         data_source_name = source_name;
-        _observation_types.push_back(observation_type(flow, cumecs, "Flow"));
+        _observation_types.push_back(observation_type(flow, flow_units, "Flow"));
         _observation_types.push_back(observation_type(stage_height, metres, "Stage"));
         _observation_types.push_back(observation_type(temperature, celcius, "Water Temperature (continuous)"));
     }
