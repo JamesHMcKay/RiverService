@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     hilltop_data_source marlborough_source("http://hydro.marlborough.govt.nz/data.hts", "Marlborough Regional Council");
 
     vector<data_source*> data_sources;
-    data_sources.push_back(&tasman_source);
+    //data_sources.push_back(&tasman_source);
     data_sources.push_back(&horizons_source);
     //data_sources.push_back(&marlborough_source);
     data_sources.push_back(&niwa_source);
