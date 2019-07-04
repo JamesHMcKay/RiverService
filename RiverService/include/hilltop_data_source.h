@@ -69,7 +69,6 @@ public:
         vector<string_t> result_gauges;
 
         for (auto const & e : gauges.as_array()) {
-            wcout << "GOT GAUGES NAME = " << e.at(U("gauge_name")) << endl;
             string_t name = e.at(U("gauge_name")).as_string();
             string_t id_t = e.at(U("gauge_id")).as_string();
             string_t region = e.at(U("region")).as_string();
