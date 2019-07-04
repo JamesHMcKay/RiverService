@@ -115,10 +115,13 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
         lat_lon position = feature->get_position();
         feature_item[U("location")] = position.get_lat_lon();
         feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
+        feature_item[U("region")] = json::value::string(feature->get_region());
+        feature_item[U("river_name")] = json::value::string(feature->get_river_name());
 
         vector<observation_type> observation_types = feature->get_observation_types();
         std::vector<web::json::value> obs_types;
         sensor_obs latest_values = feature->get_latest_sensor_obs();
+        feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
         for (unsigned int i = 0; i < observation_types.size(); i++) {
             web::json::value obs_item;
             auto& type = observation_types[i];
@@ -172,7 +175,6 @@ json::value get_flow_response(data_store &data, json::value ids) {
 
                 std::vector<web::json::value> flowOut;
                 vector<observation_type> observation_types = feature->get_observation_types();
-
 
                 for (unsigned int i = 0; i < flow_history.size(); i++) {
                     sensor_obs item = flow_history[i];

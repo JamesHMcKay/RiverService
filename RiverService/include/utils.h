@@ -38,6 +38,7 @@ using namespace web::json;
 
 namespace utils {
     chrono::system_clock::time_point convert_time_str(string time);
+
     string ref_time_str();
 
     string get_distant_future_time();
@@ -47,6 +48,8 @@ namespace utils {
     string get_time_utc(chrono::system_clock::time_point time, string time_zone_diff = "0");
 
     pplx::task<string> get_xml_response(string_t host_url, uri_builder uri);
+
+    pplx::task<string> get_json_response(string_t host_url, uri_builder uri);
 
     string observable_to_string(observable type);
 

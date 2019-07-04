@@ -29,6 +29,7 @@ public:
         case stage_height: result = "stage_height"; break;
         case temperature: result = "temperature"; break;
         case pH: result = "pH"; break;
+        case rainfall: result = "rainfall"; break;
         default: result = "value";
         }
         return utility::conversions::to_string_t(result);

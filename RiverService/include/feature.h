@@ -38,7 +38,7 @@ class feature_of_interest {
 
     system_clock::time_point last_checked_for_updates;
 
-    string _name;
+    string_t _name;
 
     utility::string_t _id;
 
@@ -48,9 +48,13 @@ class feature_of_interest {
 
     string_t _host_url;
 
-    string _data_source_name;
+    string_t _data_source_name;
 
     vector<observation_type> _observation_types;
+
+    string_t _river_name;
+
+    string_t _region;
 
 public:
     observation_store obs_store;
@@ -58,14 +62,32 @@ public:
     chrono::duration<double> next_update_time = chrono::duration<double>::zero();
 
     feature_of_interest() {}
-    feature_of_interest(string name, utility::string_t id, lat_lon position, string data_source_name, vector<observation_type> observation_types = {}) {
+    feature_of_interest(string_t name, utility::string_t id, lat_lon position, string_t data_source_name, vector<observation_type> observation_types = {}) {
         _name = name;
         _position = position;
         _id = id;
         _data_source_name = data_source_name;
         _observation_types = observation_types;
+        _region = data_source_name;
+        _river_name = utility::conversions::to_string_t("undefined");
     }
 
+    feature_of_interest(string_t name, utility::string_t id, lat_lon position, string_t data_source_name, string_t region, string_t river_name) {
+        _name = name;
+        _position = position;
+        _id = id;
+        _data_source_name = data_source_name;
+        _river_name = river_name;
+        _region = region;
+    }
+
+    utility::string_t get_river_name() {
+        return _river_name;
+    }
+
+    utility::string_t get_region() {
+        return _region;
+    }
 
     void add_observation_type(observation_type type) {
         _observation_types.push_back(type);
@@ -76,7 +98,7 @@ public:
     }
 
     utility::string_t get_data_source_name() {
-        return utility::conversions::to_string_t(_data_source_name);
+        return _data_source_name;
     }
 
     utility::string_t get_last_checked_time() {
@@ -89,10 +111,6 @@ public:
 
     lat_lon get_position() {
         return _position;
-    }
-
-    string get_name_str() {
-        return _name;
     }
 
     utility::string_t get_name() {

@@ -23,6 +23,10 @@
 #include "pugixml.hpp"
 #include <string>
 
+using namespace web::http;
+using namespace web::http::client;
+using namespace web::json;
+
 using namespace std;
 
 class OrderUpdateQueue {
@@ -62,6 +66,10 @@ protected:
     bool initiliased;
 
     string_t _host_url;
+
+    units _source_units;
+
+    type_dict _source_type_dict;
 
     map<utility::string_t, feature_of_interest*> feature_map;
 

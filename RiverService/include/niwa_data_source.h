@@ -37,7 +37,7 @@ public:
             double lon = atof(position_element[1].c_str());
 
             feature_of_interest * new_feature;
-            new_feature = new feature_of_interest(name, id_t, lat_lon(lat, lon), data_source_name);
+            new_feature = new feature_of_interest(utility::conversions::to_string_t(name), id_t, lat_lon(lat, lon), utility::conversions::to_string_t(data_source_name));
             feature_map[id_t] = new_feature;
         }
     };
