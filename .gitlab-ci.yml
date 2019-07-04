@@ -11,7 +11,7 @@ stages:
 docker-build:
   stage: build
   script:
-  - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
+  - docker login -u _ -password-stdin $HEROKU_TOKEN registry.heroku.com
   - docker pull registry.heroku.com/riverservice/web || true
   - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.heroku.com/riverservice/web --iidfile imageid.txt .
   - docker push registry.heroku.com/riverservice/web
