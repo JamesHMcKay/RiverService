@@ -87,7 +87,11 @@ public:
         process_data_availability_response(responses_availability);
     };
 
-    void process_flow_response(pugi::xml_node doc, std::map<string, sensor_obs> &result, observable type) {
+    void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
+        pugi::xml_document doc;
+        pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
+
+
         pugi::xml_node responses = doc.child("sos:GetObservationResponse").child("sos:observationData").child("om:OM_Observation").child("om:result").child("wml2:MeasurementTimeseries");
         for (pugi::xml_node item : responses.children("wml2:point")) {
             pugi::xml_node feature = item.child("wml2:MeasurementTVP");

@@ -86,7 +86,7 @@ namespace utils {
 
     pplx::task<string> get_xml_response(string_t host_url, uri_builder uri) {
         web::http::client::http_client_config client_config;
-        client_config.set_timeout(std::chrono::seconds(3));
+        client_config.set_timeout(std::chrono::seconds(10));
 
         http_client client(host_url, client_config);
         auto path_query_fragment = uri.to_string();

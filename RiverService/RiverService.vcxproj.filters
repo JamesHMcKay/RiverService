@@ -54,6 +54,12 @@
     <ClInclude Include="include\observation_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ecan_data_source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\akl_data_source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\server.cpp">

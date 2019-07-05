@@ -47,7 +47,7 @@ public:
 
     virtual void get_all_features() = 0;
 
-    virtual void process_flow_response(pugi::xml_node doc, std::map<string, sensor_obs> &result, observable type) = 0;
+    virtual void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) = 0;
 
     virtual string get_flow_data(utility::string_t feature_id, string lower_time, string type) = 0;
 

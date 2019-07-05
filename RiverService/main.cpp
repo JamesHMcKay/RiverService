@@ -12,6 +12,8 @@
 #include "health_tracker.h"
 #include "niwa_data_source.h"
 #include "hilltop_data_source.h"
+#include "ecan_data_source.h"
+#include "akl_data_source.h"
 
 #include <iostream>
 #include <string>
@@ -42,6 +44,10 @@ int main(int argc, char *argv[]) {
     hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature"));
     hilltop_data_source taranaki("http://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
 
+    akl_data_source auckland;
+
+    ecan_data_source ecan;
+
     vector<data_source*> data_sources;
     data_sources.push_back(&otago_source);
     data_sources.push_back(&wellington_source);
@@ -49,6 +55,10 @@ int main(int argc, char *argv[]) {
     data_sources.push_back(&marlborough_source);
     data_sources.push_back(&horizons_source);
     data_sources.push_back(&gisbourne);
+
+    data_sources.push_back(&auckland);
+    data_sources.push_back(&ecan);
+
     //data_sources.push_back(&niwa_source);
 
     data_store data(data_sources);

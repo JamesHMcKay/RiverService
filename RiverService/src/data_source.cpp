@@ -78,11 +78,9 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     for (auto &type : feature_to_update->get_observation_types()) {
 
         string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
-        pugi::xml_document doc;
-        pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
 
         // add a type or units parameter
-        process_flow_response(doc, values, type.get_obs_type());
+        process_flow_response(flow_res_string, values, type.get_obs_type());
 
         // generalise this function to type a "type of obs" parameter
 

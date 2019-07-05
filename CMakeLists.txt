@@ -27,7 +27,7 @@ set(CPPFLAGS -stdlib=libc++ LDFLAGS -lcpprest -lssl -lcrypto -lboost_system -lbo
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -Wall ")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O3 ")
 set(CMAKE_CXX_STANDARD 14)
-set(SOURCE_FILES RiverService/main.cpp RiverService/include/feature.h RiverService/include/server.h RiverService/include/utils.h RiverService/include/data_source.h RiverService/include/data_store.h RiverService/include/lat_lon.h RiverService/include/observation_store.h RiverService/include/sensor_obs.h RiverService/src/server.cpp RiverService/src/utils.cpp RiverService/src/data_source.cpp RiverService/src/data_store.cpp RiverService/src/feature.cpp RiverService/include/health_tracker.h RiverService/include/niwa_data_source.h RiverService/include/hilltop_data_source.h RiverService/include/observable.h RiverService/include/observation_type.h)
+set(SOURCE_FILES RiverService/main.cpp RiverService/include/feature.h RiverService/include/server.h RiverService/include/utils.h RiverService/include/data_source.h RiverService/include/data_store.h RiverService/include/lat_lon.h RiverService/include/observation_store.h RiverService/include/sensor_obs.h RiverService/src/server.cpp RiverService/src/utils.cpp RiverService/src/data_source.cpp RiverService/src/data_store.cpp RiverService/src/feature.cpp RiverService/include/health_tracker.h RiverService/include/niwa_data_source.h RiverService/include/hilltop_data_source.h RiverService/include/ecan_data_source.h RiverService/include/akl_data_source.h RiverService/include/observable.h RiverService/include/observation_type.h)
 add_executable(crest ${SOURCE_FILES})
 
 set(CPPRESTSDK_INCLUDE_DIR "./libs/cpprestsdk/Release/include")
