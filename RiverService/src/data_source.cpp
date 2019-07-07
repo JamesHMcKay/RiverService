@@ -82,10 +82,11 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
         string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
 
         // add a type or units parameter
-        process_flow_response(flow_res_string, values, type.get_obs_type());
+        if (flow_res_string != "") {
+            process_flow_response(flow_res_string, values, type.get_obs_type());
+        }
 
         // generalise this function to type a "type of obs" parameter
-
     }
     vector<sensor_obs> result;
     for (const auto &s : values) {
