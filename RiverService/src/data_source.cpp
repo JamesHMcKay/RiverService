@@ -12,12 +12,14 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
     // create the initial priority_queue
     int count = 0;
 
+    wcout << "creating feature queue for source:" << data_source_name.c_str() << endl;
+
     for (auto &entry : feature_map) {
         count++;
-        //if (count < 10) {
+        if (count < 10) {
         update_feature(entry.second);
         update_queue.push(entry.second);
-        //}
+        }
     }
 
     wcout << "queue is created, the current order is:" << endl;
