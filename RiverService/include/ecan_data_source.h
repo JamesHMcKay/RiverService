@@ -24,10 +24,9 @@ public:
         return builder;
     };
 
-
     void get_all_features() {
         uri_builder builder;
-        string query = "{gauges(where: {agency_name:\"" + data_source_name + "\"}){region, agency_name, latitude, longitude, query_id, available_data, river_name, gauge_id, gauge_name}}";
+        string query = "{gauges(limit:999,where: {agency_name:\"" + data_source_name + "\"}){region, agency_name, latitude, longitude, query_id, available_data, river_name, gauge_id, gauge_name}}";
         builder.append_query(U("query"), to_string_t(query));
         string_t strapi_url = utility::conversions::to_string_t("https://rapidsapi.herokuapp.com/graphql");
         string res_string = utils::get_xml_response(strapi_url, builder).get();
