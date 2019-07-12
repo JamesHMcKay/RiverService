@@ -25,30 +25,26 @@ using namespace std;
 
 map<utility::string_t, utility::string_t> dictionary;
 
-void display_json(
-    json::value const & jvalue,
-    utility::string_t const & prefix)
-{
-    //wcout << prefix << jvalue.serialize() << endl;
-}
-
 const std::function<void(http_request)> handle_get_wrapped(health_tracker &health) {
     return ([&health](http_request request) {
         TRACE(L"\nhandle GET\n");
-
+        auto uri = request.absolute_uri();
+        auto v_path_components = web::uri::split_path(web::uri::decode(uri.path()));
+        wcout << "path = " << utility::conversions::to_string_t(uri.path()) << endl;
         auto answer = json::value::object();
-        string_t status = utility::conversions::to_string_t(health.get_status());
 
-        answer[U("status")] = json::value::string(status);
-        chrono::duration<double> up_time_duration = health.get_uptime();
-        auto up_time = std::chrono::duration_cast<std::chrono::seconds>(up_time_duration).count();
+        if (uri.path() == utility::conversions::to_string_t("status")) {
+            string_t status = utility::conversions::to_string_t(health.get_status());
+            answer[U("status")] = json::value::string(status);
+            chrono::duration<double> up_time_duration = health.get_uptime();
+            auto up_time = std::chrono::duration_cast<std::chrono::seconds>(up_time_duration).count();
+            answer[U("up_time_seconds")] = json::value(up_time);
+            request.reply(status_codes::OK, answer);
+        }
+        else {
+            request.reply(status_codes::OK, "This is the river service");
+        }
 
-        answer[U("up_time_seconds")] = json::value(up_time);
-
-        display_json(json::value::null(), U("R: "));
-        display_json(answer, U("S: "));
-
-        request.reply(status_codes::OK, answer);
     });
 }
 
@@ -62,9 +58,6 @@ void handle_get(http_request request)
     {
         answer[p.first] = json::value::string(p.second);
     }
-
-    display_json(json::value::null(), U("R: "));
-    display_json(answer, U("S: "));
 
     request.reply(status_codes::OK, answer);
 }
@@ -148,8 +141,6 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
 
     return response;
 }
-
-
 
 json::value get_flow_response(data_store &data, json::value ids) {
     json::value answer;

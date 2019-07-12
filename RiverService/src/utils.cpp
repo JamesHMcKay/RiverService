@@ -49,41 +49,6 @@ namespace utils {
         return first_time;
     }
 
-    pplx::task<string> get_json_response(string_t host_url, uri_builder uri) {
-        web::http::client::http_client_config client_config;
-        client_config.set_timeout(std::chrono::seconds(3));
-
-        http_client client(host_url, client_config);
-        auto path_query_fragment = uri.to_string();
-
-        return client.request(methods::GET, path_query_fragment).then([](task<http_response> response_task) {
-            http_response response;
-            try {
-                response = response_task.get();
-                std::wcout << "Response status code: " << response.status_code() << std::endl;
-            }
-            catch (const std::exception& e) {
-                wcout << "request error: " << e.what() << endl;
-                response.set_status_code(status_codes::RequestTimeout);
-            }
-            string result = "";
-            if (response.status_code() == status_codes::OK) {
-                std::wostringstream stream;
-                std::wcout << stream.str();
-                stream.str(std::wstring());
-                std::wcout << stream.str();
-                auto bodyStream = response.body();
-                streams::stringstreambuf sbuffer;
-                auto& target = sbuffer.collection();
-                bodyStream.read_to_end(sbuffer).get();
-                stream.str(std::wstring());
-                std::wcout << stream.str();
-                result = target.c_str();
-            }
-            return result;
-        });
-    }
-
     pplx::task<string> get_xml_response(string_t host_url, uri_builder uri) {
         web::http::client::http_client_config client_config;
         client_config.set_timeout(std::chrono::seconds(10));

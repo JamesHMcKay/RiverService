@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <chrono>
-
 using namespace std;
 using namespace chrono;
 
@@ -14,8 +13,13 @@ enum application_status {
 
 class health_tracker {
     chrono::system_clock::time_point start_time;
+
     int http_requests_made = 0;
+
     application_status status = okay;
+
+    string instance_id;
+
 
 public:
     health_tracker() {

@@ -44,6 +44,8 @@ int main(int argc, char *argv[]) {
     hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature"));
     hilltop_data_source taranaki("http://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
 
+    hilltop_data_source northland("http://hilltop.nrc.govt.nz/data.hts?", "Northland Regional Council", units(1, 1000));
+
     akl_data_source auckland;
 
     ecan_data_source ecan;
@@ -58,6 +60,8 @@ int main(int argc, char *argv[]) {
 
     data_sources.push_back(&auckland);
     data_sources.push_back(&ecan);
+
+    data_sources.push_back(&northland);
 
     //data_sources.push_back(&niwa_source);
 

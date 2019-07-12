@@ -22,6 +22,4 @@ heroku container:release --app riverservice web
 
 ------------------   Amazon Light sail -------------------
 
-Log in with ssh and run the following command to pull from the heroku docker registry
-
-sudo docker run -e PORT=80 -p 80:80 IMAGE_ID
+Following the instructions here, https://davekz.com/docker-on-lightsail/ , we choose an Ubuntu instance and use the script saved in this directory, called lightsail_launch_script.txt.
