@@ -30,7 +30,6 @@ const std::function<void(http_request)> handle_get_wrapped(health_tracker &healt
         TRACE(L"\nhandle GET\n");
         auto uri = request.absolute_uri();
         auto v_path_components = web::uri::split_path(web::uri::decode(uri.path()));
-        wcout << "path = " << utility::conversions::to_string_t(uri.path()) << endl;
         auto answer = json::value::object();
 
         if (uri.path() == utility::conversions::to_string_t("status")) {
