@@ -13,9 +13,7 @@ docker-build:
   script:
   - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
   - docker pull registry.heroku.com/riverservice/web || true
-  - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.heroku.com/riverservice/web --iidfile imageid.txt .
-  - docker push registry.heroku.com/riverservice/web
+  - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.gitlab.com/jameshmckay/riverservice --iidfile imageid.txt .
   - docker push registry.gitlab.com/jameshmckay/riverservice
   - apk add --no-cache curl
   - |-
-    curl -X PATCH https://api.heroku.com/apps/riverservice/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
