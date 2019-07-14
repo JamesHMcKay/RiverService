@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
     hilltop_data_source hawkes_bay("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Hawkes Bay Regional Council", units(1000, 1000), type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall"));
 
-    hilltop_data_source bop("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Bay of Plenty Regional Council", units(1, 1), type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip%20Total_HourTotal"));
+    hilltop_data_source bop("http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service", "Bay of Plenty Regional Council", units(1, 1), type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip%20Total_HourTotal"));
 
     akl_data_source auckland;
 
