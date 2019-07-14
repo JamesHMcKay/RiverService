@@ -50,15 +50,20 @@ class type_dict {
     string flow_name;
     string stage_name;
     string temp_name;
-    string rainfall_name = "Rainfall";
+    string rainfall_name;
 public:
     type_dict() {
         flow_name = "Flow";
         stage_name = "Stage";
         temp_name = "Water Temperature";
+        rainfall_name = "Rainfall";
     }
 
-    type_dict(string flow_name, string stage_name, string temp_name) : flow_name(flow_name), stage_name(stage_name), temp_name(temp_name) {}
+    type_dict(string flow_name, string stage_name, string temp_name, string rainfall_name) : flow_name(flow_name), stage_name(stage_name), temp_name(temp_name), rainfall_name(rainfall_name) {}
+
+    type_dict(string flow_name, string stage_name, string temp_name) : flow_name(flow_name), stage_name(stage_name), temp_name(temp_name) {
+        rainfall_name = "Rainfall";
+    }
 
     string get_name(observable obs) {
         string result;

@@ -38,13 +38,17 @@ int main(int argc, char *argv[]) {
 
     niwa_data_source niwa_source;
     hilltop_data_source otago_source("http://gisdata.orc.govt.nz/Hilltop/data.hts", "Otago Regional Council");
-    hilltop_data_source horizons_source("http://TSData.Horizons.govt.nz/data.hts", "Horizons", units(1000,1000), type_dict("Flow", "Stage", "Water Temperature"));
-    hilltop_data_source marlborough_source("http://hydro.marlborough.govt.nz/mdc%20data.hts?", "Marlborough District Council");
+    hilltop_data_source horizons_source("http://TSData.Horizons.govt.nz/data.hts", "Horizons", units(1000,1000), type_dict("Flow", "Stage", "Water Temperature", "Rainfall"));
+    hilltop_data_source marlborough_source("http://hydro.marlborough.govt.nz/mdc%20data.hts", "Marlborough District Council");
     hilltop_data_source wellington_source("http://hilltop.gw.govt.nz/data.hts", "Greater Wellington");
-    hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature"));
+    hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature", "Rainfall"));
     hilltop_data_source taranaki("http://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
 
-    hilltop_data_source northland("http://hilltop.nrc.govt.nz/data.hts?", "Northland Regional Council", units(1, 1000));
+    hilltop_data_source northland("http://hilltop.nrc.govt.nz/data.hts", "Northland Regional Council", units(1, 1000));
+
+    hilltop_data_source hawkes_bay("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Hawkes Bay Regional Council", units(1000, 1000), type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall"));
+
+    hilltop_data_source bop("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Bay of Plenty Regional Council", units(1, 1), type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip%20Total_HourTotal"));
 
     akl_data_source auckland;
 
@@ -52,11 +56,13 @@ int main(int argc, char *argv[]) {
 
     vector<data_source*> data_sources;
     //data_sources.push_back(&otago_source);
-    data_sources.push_back(&wellington_source);
+    //data_sources.push_back(&wellington_source);
     //data_sources.push_back(&taranaki);
     //data_sources.push_back(&marlborough_source);
     //data_sources.push_back(&horizons_source);
     //data_sources.push_back(&gisbourne);
+    //data_sources.push_back(&hawkes_bay);
+    data_sources.push_back(&bop);
 
     //data_sources.push_back(&auckland);
     //data_sources.push_back(&ecan);
