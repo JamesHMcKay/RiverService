@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\akl_data_source.h" />
+    <ClInclude Include="include\bop_data_source.h" />
     <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\ecan_data_source.h" />
     <ClInclude Include="include\feature.h" />
