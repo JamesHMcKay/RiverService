@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     ecan_data_source ecan;
 
     vector<data_source*> data_sources;
-    data_sources.push_back(&otago_source);
+    //data_sources.push_back(&otago_source);
     data_sources.push_back(&wellington_source);
     data_sources.push_back(&taranaki);
     data_sources.push_back(&marlborough_source);
