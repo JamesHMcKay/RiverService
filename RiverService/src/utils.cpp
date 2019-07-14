@@ -43,14 +43,16 @@ namespace utils {
     system_clock::time_point get_time_point_utc(string time_str) {
         int time_str_length = time_str.size();
         string suffix = time_str.substr(time_str_length - 2, time_str_length - 1);
-        string time_zone = "0";
+        int offset = 0;
+        wcout << "suffix = " << utility::conversions::to_string_t(suffix).c_str() << endl;
         if (suffix == "Z") {
-            time_zone = "0";
+            wcout << "here" << endl;
         } else {
-            time_zone = time_str.substr(time_str_length - 5, time_str_length - 1);
+            string time_zone = time_str.substr(time_str_length - 5, time_str_length - 1);
+            offset = std::stoi(time_zone);
         }
         system_clock::time_point first_time = utils::convert_time_str(time_str);
-        int offset = std::stoi(time_zone);
+        wcout << "done converting time" << endl;
         first_time += -chrono::hours(offset);
         return first_time;
     }
