@@ -3,6 +3,10 @@
 using namespace chrono;
 
 bool accept_observation(sensor_obs first, sensor_obs second, duration<double> tolerance) {
+    wcout << "converting time string = " << endl;
+    wcout << "converting time string = " << first.get_time_str().c_str() << endl;
+    wcout << "converting time string = " << second.get_time_str().c_str() << endl;
+
     system_clock::time_point first_time = utils::convert_time_str(first.get_time_str());
     system_clock::time_point second_time = utils::convert_time_str(second.get_time_str());
 
@@ -15,7 +19,7 @@ bool accept_observation(sensor_obs first, sensor_obs second, duration<double> to
 void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
     int num_of_obs = obs.size();
     duration<double > tolerance = hours(1);
-
+    wcout << "num_of_obs = " << num_of_obs << endl;
     if (obs_store.length == 0 && num_of_obs > 0) {
         obs_store.add_to_top(obs[0]);
         status = 1;
