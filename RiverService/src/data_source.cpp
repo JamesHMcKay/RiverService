@@ -16,11 +16,10 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
 
     for (auto &entry : feature_map) {
         count++;
-        if (count < 3) {
+        //if (count < 10) {
         update_feature(entry.second);
         update_queue.push(entry.second);
-        wcout << "done pushing to update queue " << endl;
-        }
+        //}
     }
 
     wcout << "queue is created, the current order is:" << endl;

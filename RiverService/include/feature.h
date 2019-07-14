@@ -166,7 +166,11 @@ public:
         else {
             string latest_time = obs_store.get_first()->value.get_time_str();
             int time_str_length = latest_time.size();
-            string time_zone = latest_time.substr(time_str_length - 5, time_str_length - 1);
+            string time_zone = "0";
+            string suffix = latest_time.substr(time_str_length - 1, time_str_length - 1);
+            if (suffix != "Z") {
+                string time_zone = latest_time.substr(time_str_length - 5, time_str_length - 1);
+            }
             lower_time = utils::get_time_utc(utils::convert_time_str(latest_time), time_zone);
         }
         return lower_time;

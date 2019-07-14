@@ -49,6 +49,8 @@ int main(int argc, char *argv[]) {
 
     hilltop_data_source hawkes_bay("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Hawkes Bay Regional Council", units(1000, 1000), type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall"));
 
+    hilltop_data_source tasman("http://envdata.tasman.govt.nz/anything.hts", "Tasman District Council", units(1, 1000), type_dict("Flow", "Stage", "Water Temperature (continuous)"));
+
     bop_data_source bop;
 
     akl_data_source auckland;
@@ -56,21 +58,19 @@ int main(int argc, char *argv[]) {
     ecan_data_source ecan;
 
     vector<data_source*> data_sources;
-    //data_sources.push_back(&otago_source);
-    //data_sources.push_back(&wellington_source);
-    //data_sources.push_back(&taranaki);
-    //data_sources.push_back(&marlborough_source);
-    //data_sources.push_back(&horizons_source);
-    //data_sources.push_back(&gisbourne);
-    //data_sources.push_back(&hawkes_bay);
+    data_sources.push_back(&otago_source);
+    data_sources.push_back(&wellington_source);
+    data_sources.push_back(&taranaki);
+    data_sources.push_back(&marlborough_source);
+    data_sources.push_back(&horizons_source);
+    data_sources.push_back(&gisbourne);
+    data_sources.push_back(&hawkes_bay);
     data_sources.push_back(&bop);
-
-    //data_sources.push_back(&auckland);
-    //data_sources.push_back(&ecan);
-
-    //data_sources.push_back(&northland);
-
-    //data_sources.push_back(&niwa_source);
+    data_sources.push_back(&tasman);
+    data_sources.push_back(&niwa_source);
+    data_sources.push_back(&auckland);
+    data_sources.push_back(&ecan);
+    data_sources.push_back(&northland);
 
     if (const char* env_p = std::getenv("HOSTNAME")) {
         health.set_id(env_p);

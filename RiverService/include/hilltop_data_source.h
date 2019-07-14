@@ -52,7 +52,7 @@ public:
 
         for (auto const & e : gauges.as_array()) {
             string_t name = e.at(U("gauge_name")).as_string();
-            string_t id_t = e.at(U("gauge_id")).as_string();
+            string_t id_t = e.at(U("query_id")).as_string();
             string_t region = e.at(U("region")).as_string();
             string_t river_name = e.at(U("river_name")).as_string();
             double lat = e.at(U("latitude")).as_double();

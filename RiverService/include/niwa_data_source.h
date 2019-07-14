@@ -2,16 +2,18 @@
 #define NIWA_DATA_SOURCE_H
 
 #include "data_source.h"
+#include "hilltop_data_source.h"
 
 using namespace std;
 
-class niwa_data_source: public data_source {
+class niwa_data_source: public hilltop_data_source {
 public:
     niwa_data_source() {
         _host_url = utility::conversions::to_string_t("https://hydro-sos.niwa.co.nz/");
         initiliased = false;
         data_source_name = "NIWA";
-        _observation_types.push_back(observation_type(flow, cumecs, "Discharge"));
+        _source_type_dict = type_dict("Discharge", "Stage", "Water Temperature");
+        _source_units = units(1, 1);
     }
 
     uri_builder get_source_uri(string obs_type = "") {
@@ -22,70 +24,70 @@ public:
         return builder;
     };
 
-    void process_feature_response(pugi::xml_node responses) {
-        for (pugi::xml_node item : responses.children("sos:featureMember")) {
-            pugi::xml_node feature = item.child("sams:SF_SpatialSamplingFeature");
-            string name = feature.child("gml:name").text().get();
-            string id = feature.child("gml:identifier").text().get();
-            string position = feature.child("sams:shape").child("ns:Point").child("ns:pos").text().get();
+    //void process_feature_response(pugi::xml_node responses) {
+    //    for (pugi::xml_node item : responses.children("sos:featureMember")) {
+    //        pugi::xml_node feature = item.child("sams:SF_SpatialSamplingFeature");
+    //        string name = feature.child("gml:name").text().get();
+    //        string id = feature.child("gml:identifier").text().get();
+    //        string position = feature.child("sams:shape").child("ns:Point").child("ns:pos").text().get();
 
-            utility::string_t id_t = utility::conversions::to_string_t(id);
+    //        utility::string_t id_t = utility::conversions::to_string_t(id);
 
-            std::vector<std::string> position_element;
-            boost::split(position_element, position, [](char c) {return c == ' '; });
-            double lat = atof(position_element[0].c_str());
-            double lon = atof(position_element[1].c_str());
+    //        std::vector<std::string> position_element;
+    //        boost::split(position_element, position, [](char c) {return c == ' '; });
+    //        double lat = atof(position_element[0].c_str());
+    //        double lon = atof(position_element[1].c_str());
 
-            feature_of_interest * new_feature;
-            new_feature = new feature_of_interest(utility::conversions::to_string_t(name), id_t, lat_lon(lat, lon), utility::conversions::to_string_t(data_source_name));
-            feature_map[id_t] = new_feature;
-        }
-    };
+    //        feature_of_interest * new_feature;
+    //        new_feature = new feature_of_interest(utility::conversions::to_string_t(name), id_t, lat_lon(lat, lon), utility::conversions::to_string_t(data_source_name));
+    //        feature_map[id_t] = new_feature;
+    //    }
+    //};
 
-    void process_data_availability_response(pugi::xml_node responses) {
-        for (pugi::xml_node item : responses.children("gda:dataAvailabilityMember")) {
-            pugi::xml_node feature_id = item.child("gda:featureOfInterest");
-            string id = feature_id.first_attribute().value();
-            utility::string_t id_t = utility::conversions::to_string_t(id);
+    //void process_data_availability_response(pugi::xml_node responses) {
+    //    for (pugi::xml_node item : responses.children("gda:dataAvailabilityMember")) {
+    //        pugi::xml_node feature_id = item.child("gda:featureOfInterest");
+    //        string id = feature_id.first_attribute().value();
+    //        utility::string_t id_t = utility::conversions::to_string_t(id);
 
-            pugi::xml_node data_type = item.child("gda:observedProperty");
-            string type = data_type.first_attribute().value();
+    //        pugi::xml_node data_type = item.child("gda:observedProperty");
+    //        string type = data_type.first_attribute().value();
 
-            auto pos = feature_map.find(id_t);
-            if (pos == feature_map.end()) {
-                wcout << "FEATURE NOT FOUND" << endl;
-            }
-            else {
-                observable obs_type = utils::string_to_observable(type);
-                feature_map[id_t]->add_observation_type(observation_type(
-                    obs_type,
-                    utils::type_to_unit_niwa(obs_type),
-                    type
-                ));
-            }
-        }
-    }
+    //        auto pos = feature_map.find(id_t);
+    //        if (pos == feature_map.end()) {
+    //            wcout << "FEATURE NOT FOUND" << endl;
+    //        }
+    //        else {
+    //            observable obs_type = utils::string_to_observable(type);
+    //            feature_map[id_t]->add_observation_type(observation_type(
+    //                obs_type,
+    //                utils::type_to_unit_niwa(obs_type),
+    //                type
+    //            ));
+    //        }
+    //    }
+    //}
 
-    void get_all_features() {
-        std::vector<unique_ptr<feature_of_interest>> features;
-        std::wcout << "Getting features..." << std::endl;
-        string res_string = utils::get_xml_response(_host_url, get_source_uri("GetFeatureOfInterest")).get();
-        pugi::xml_document doc;
-        pugi::xml_parse_result response_all = doc.load_string(res_string.c_str());
+    //void get_all_features() {
+    //    std::vector<unique_ptr<feature_of_interest>> features;
+    //    std::wcout << "Getting features..." << std::endl;
+    //    string res_string = utils::get_xml_response(_host_url, get_source_uri("GetFeatureOfInterest")).get();
+    //    pugi::xml_document doc;
+    //    pugi::xml_parse_result response_all = doc.load_string(res_string.c_str());
 
-        pugi::xml_node responses = doc.child("sos:GetFeatureOfInterestResponse");
+    //    pugi::xml_node responses = doc.child("sos:GetFeatureOfInterestResponse");
 
-        wcout << "got responses" << endl;
-        process_feature_response(responses);
-        // get data availability for these features
-        res_string = utils::get_xml_response(_host_url, get_source_uri("GetDataAvailability")).get();
-        pugi::xml_document doc_data_avail;
-        pugi::xml_parse_result response_availability = doc_data_avail.load_string(res_string.c_str());
+    //    wcout << "got responses" << endl;
+    //    process_feature_response(responses);
+    //    // get data availability for these features
+    //    res_string = utils::get_xml_response(_host_url, get_source_uri("GetDataAvailability")).get();
+    //    pugi::xml_document doc_data_avail;
+    //    pugi::xml_parse_result response_availability = doc_data_avail.load_string(res_string.c_str());
 
-        pugi::xml_node responses_availability = doc_data_avail.child("gda:GetDataAvailabilityResponse");
+    //    pugi::xml_node responses_availability = doc_data_avail.child("gda:GetDataAvailabilityResponse");
 
-        process_data_availability_response(responses_availability);
-    };
+    //    process_data_availability_response(responses_availability);
+    //};
 
     void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
         pugi::xml_document doc;

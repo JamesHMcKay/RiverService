@@ -44,10 +44,7 @@ namespace utils {
         int time_str_length = time_str.size();
         string suffix = time_str.substr(time_str_length - 1, time_str_length - 1);
         int offset = 0;
-        wcout << "suffix = " << utility::conversions::to_string_t(suffix).c_str() << endl;
-        if (suffix == "Z") {
-            wcout << "here" << endl;
-        } else {
+        if (suffix != "Z") {
             string time_zone = time_str.substr(time_str_length - 5, time_str_length - 1);
             offset = std::stoi(time_zone);
         }
