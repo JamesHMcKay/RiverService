@@ -11,9 +11,7 @@ stages:
 docker-build:
   stage: build
   script:
-  - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
-  - docker pull registry.heroku.com/riverservice/web || true
-  - docker build --cache-from registry.heroku.com/riverservice/web --tag registry.gitlab.com/jameshmckay/riverservice --iidfile imageid.txt .
-  - docker push registry.gitlab.com/jameshmckay/riverservice
-  - apk add --no-cache curl
-  - |-
+  - docker login --username=jhmckay93 -p=riverservice1037
+  - docker pull jhmckay93/riverservice:latest || true
+  - docker build --cache-from jhmckay93/riverservice:latest --tag jhmckay93/riverservice --iidfile imageid.txt .
+  - docker push jhmckay93/riverservice

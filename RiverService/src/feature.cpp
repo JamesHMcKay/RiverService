@@ -18,6 +18,7 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
 
     if (obs_store.length == 0 && num_of_obs > 0) {
         obs_store.add_to_top(obs[0]);
+        status = 1;
     }
 
     for (int i = 1; i < num_of_obs; i++) {
@@ -28,6 +29,10 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
 
     if (num_of_obs > 2) {
         set_update_time(obs[num_of_obs - 1], obs[num_of_obs - 2]);
+    } else {
+        system_clock::time_point current_time = system_clock::now();
+        chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
+        next_update_time = current_time_ref + tolerance;
     }
 
     obs_store.remove_old_points(chrono::hours(720));

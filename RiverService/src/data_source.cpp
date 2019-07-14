@@ -16,10 +16,10 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
 
     for (auto &entry : feature_map) {
         count++;
-        //if (count < 10) {
+        if (count < 5) {
         update_feature(entry.second);
         update_queue.push(entry.second);
-        //}
+        }
     }
 
     wcout << "queue is created, the current order is:" << endl;
@@ -93,4 +93,14 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
         result.push_back(s.second);
     }
     feature_to_update->filter_observations(result);
+}
+
+std::pair<int, int> data_source::create_data_source_summary() {
+    int num_passed = 0;
+    int num_features = 0;
+    for (auto &feature_item : feature_map) {
+        num_passed += feature_item.second->status;
+        num_features += 1;
+    }
+    return std::make_pair(num_features, num_passed);
 }

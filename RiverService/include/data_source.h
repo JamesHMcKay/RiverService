@@ -34,10 +34,9 @@ public:
     bool operator()(
         feature_of_interest* first,
         feature_of_interest* second) {
-        return (first->next_update_time) < (second->next_update_time);
+        return (first->next_update_time) > (second->next_update_time);
     }
 };
-
 
 class data_source {
 public:
@@ -61,6 +60,8 @@ public:
         std::time_t time = std::chrono::system_clock::to_time_t(last_updated);
         return ctime(&time);
     }
+
+    std::pair<int, int> create_data_source_summary();
 
 protected:
     bool initiliased;

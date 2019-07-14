@@ -32,12 +32,15 @@ const std::function<void(http_request)> handle_get_wrapped(health_tracker &healt
         auto v_path_components = web::uri::split_path(web::uri::decode(uri.path()));
         auto answer = json::value::object();
 
-        if (uri.path() == utility::conversions::to_string_t("status")) {
+        if (uri.path() == utility::conversions::to_string_t("/status")) {
             string_t status = utility::conversions::to_string_t(health.get_status());
             answer[U("status")] = json::value::string(status);
             chrono::duration<double> up_time_duration = health.get_uptime();
             auto up_time = std::chrono::duration_cast<std::chrono::seconds>(up_time_duration).count();
             answer[U("up_time_seconds")] = json::value(up_time);
+
+            answer[U("data_sources")] = web::json::value::array(health.create_data_source_report());
+
             request.reply(status_codes::OK, answer);
         }
         else {
@@ -80,15 +83,11 @@ void handle_request(
                 action(jvalue, answer);
             }
         }
-        catch (http_exception const & e)
-        {
-            //wcout << e.what() << endl;
+        catch (http_exception const & e) {
+            wcout << utility::conversions::to_string_t(e.what()).c_str() << endl;
         }
     })
         .wait();
-
-
-    //display_json(answer, L"S: ");
 
     request.reply(status_codes::OK, answer);
 }
@@ -114,16 +113,21 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
         std::vector<web::json::value> obs_types;
         sensor_obs latest_values = feature->get_latest_sensor_obs();
         feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
+
+        vector<observable> available_types = latest_values.get_available_types();
+
         for (unsigned int i = 0; i < observation_types.size(); i++) {
             web::json::value obs_item;
             auto& type = observation_types[i];
-            obs_item[U("type")] = json::value(type.get_type());
-            obs_item[U("units")] = json::value(type.get_units());
-            obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
-            obs_types.push_back(obs_item);
-            for (auto &requested_type : requested_types) {
-                if (requested_type == type.get_type()) {
-                    passed_filter = true;
+            if (std::find(available_types.begin(), available_types.end(), type.get_obs_type()) != available_types.end()) {
+                obs_item[U("type")] = json::value(type.get_type());
+                obs_item[U("units")] = json::value(type.get_units());
+                obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
+                obs_types.push_back(obs_item);
+                for (auto &requested_type : requested_types) {
+                    if (requested_type == type.get_type()) {
+                        passed_filter = true;
+                    }
                 }
             }
         }
@@ -260,9 +264,8 @@ void server_session::create_session(data_store &data, utility::string_t port, he
             std::this_thread::sleep_for(std::chrono::minutes(60));
         }
     }
-    catch (exception const & e)
-    {
-        //wcout << e.what() << endl;
+    catch (exception const & e) {
+        wcout << utility::conversions::to_string_t(e.what()).c_str() << endl;
     }
 
 }

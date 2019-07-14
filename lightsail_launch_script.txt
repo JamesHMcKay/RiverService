@@ -17,6 +17,3 @@ echo "sudo docker run -d --name riverservice -e PORT=80 -p 80:80 -i -t jhmckay93
 sudo chmod u+x update_script.sh
 
 ./update_script.sh
-
-
-riverservice1037

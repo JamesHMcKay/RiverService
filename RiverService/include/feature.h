@@ -57,6 +57,8 @@ class feature_of_interest {
     string_t _region;
 
 public:
+    int status = 0;
+
     observation_store obs_store;
 
     chrono::duration<double> next_update_time = chrono::duration<double>::zero();
@@ -135,11 +137,7 @@ public:
         system_clock::time_point current_time = system_clock::now();
         chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
 
-
-
-        next_update_time = current_time_ref + max(absolute_update_period, update_period);// + chrono::seconds(120);
-
-       // cout << "setting update time, latest flow = " << latest_point.get_value() << " penultimate flow = " << penultimate_point.get_value() << endl;
+        next_update_time = current_time_ref + max(absolute_update_period, update_period);
     }
 
     void filter_observations(vector<sensor_obs> observations);

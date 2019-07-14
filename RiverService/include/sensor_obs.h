@@ -15,7 +15,7 @@ using namespace std;
 
 class sensor_obs {
     vector<pair<double, observable>> _value;
-    string _time;
+    string _time = "";
 public:
     sensor_obs() {}
 
@@ -53,6 +53,14 @@ public:
 
     vector<pair<double, observable>> get_value() {
         return _value;
+    }
+
+    vector<observable> get_available_types() {
+        vector<observable> result;
+        for (auto &entry : _value) {
+            result.push_back(entry.second);
+        }
+        return result;
     }
 
     double get_observable(observable type) {
