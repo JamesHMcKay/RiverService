@@ -18,6 +18,7 @@ public:
     }
 
     void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
+        wcout << "flow_res_string " << flow_res_string.c_str() << endl;
         pugi::xml_document doc;
         pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
 
