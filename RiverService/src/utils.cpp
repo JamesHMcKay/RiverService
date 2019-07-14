@@ -55,7 +55,7 @@ namespace utils {
 
         http_client client(host_url, client_config);
         auto path_query_fragment = uri.to_string();
-
+        wcout << "path_query_fragment " << path_query_fragment.c_str() << endl;
         return client.request(methods::GET, path_query_fragment).then([](task<http_response> response_task) {
             http_response response;
             try {

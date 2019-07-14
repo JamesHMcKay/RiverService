@@ -19,6 +19,7 @@ map<utility::string_t, feature_of_interest*> data_source::get_available_features
         if (count < 20) {
         update_feature(entry.second);
         update_queue.push(entry.second);
+        wcout << "done pushing to update queue " << endl;
         }
     }
 
@@ -78,9 +79,9 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     string lower_time = feature_to_update->get_lower_time();
     std::map<string, sensor_obs> values;
     for (auto &type : feature_to_update->get_observation_types()) {
-
-        string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
         wcout << "getting flow for type " << type.get_type().c_str() << endl;
+        string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
+        
         // add a type or units parameter
         if (flow_res_string != "") {
             process_flow_response(flow_res_string, values, type.get_obs_type());
@@ -92,7 +93,9 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     for (const auto &s : values) {
         result.push_back(s.second);
     }
+    wcout << "done pushing to result " << endl;
     feature_to_update->filter_observations(result);
+    wcout << "done filtering obs" << endl;
 }
 
 std::pair<int, int> data_source::create_data_source_summary() {
