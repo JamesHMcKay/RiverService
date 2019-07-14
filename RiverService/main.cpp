@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     hilltop_data_source marlborough_source("http://hydro.marlborough.govt.nz/mdc%20data.hts", "Marlborough District Council");
     hilltop_data_source wellington_source("http://hilltop.gw.govt.nz/data.hts", "Greater Wellington");
     hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature", "Rainfall"));
-    hilltop_data_source taranaki("http://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
+    hilltop_data_source taranaki("https://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
 
     hilltop_data_source northland("http://hilltop.nrc.govt.nz/data.hts", "Northland Regional Council", units(1, 1000));
 
