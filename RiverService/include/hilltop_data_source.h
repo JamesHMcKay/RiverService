@@ -89,6 +89,7 @@ public:
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
+        builder.append_query(U("version"), U("2.0.0"));
         builder.append_query(U("request"), U("GetObservation"));
         builder.append_query(U("FeatureOfInterest"), feature_id);
 
