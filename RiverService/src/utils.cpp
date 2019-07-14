@@ -42,7 +42,7 @@ namespace utils {
 
     system_clock::time_point get_time_point_utc(string time_str) {
         int time_str_length = time_str.size();
-        string suffix = time_str.substr(time_str_length - 2, time_str_length - 1);
+        string suffix = time_str.substr(time_str_length - 1, time_str_length - 1);
         int offset = 0;
         wcout << "suffix = " << utility::conversions::to_string_t(suffix).c_str() << endl;
         if (suffix == "Z") {
