@@ -80,7 +80,7 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     for (auto &type : feature_to_update->get_observation_types()) {
 
         string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
-
+        wcout << "getting flow for type " << type.get_type().c_str() << endl;
         // add a type or units parameter
         if (flow_res_string != "") {
             process_flow_response(flow_res_string, values, type.get_obs_type());

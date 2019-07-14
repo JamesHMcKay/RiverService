@@ -30,6 +30,7 @@ public:
             double value_num = atof(value.c_str()) / _source_units.get_units(type);
             auto pos = result.find(time);
             sensor_obs new_flow(value_num, time, type);
+            wcout << "adding flow at time " << utility::conversions::to_string_t(time).c_str() << endl;
             if (pos == result.end()) {
                 result[time] = new_flow;
             }
@@ -37,6 +38,7 @@ public:
                 result[time] = pos->second + new_flow;
             }
         }
+        wcout << "done adding flows " << endl;
     };
 };
 
