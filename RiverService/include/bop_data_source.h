@@ -13,7 +13,7 @@ public:
         _host_url = utility::conversions::to_string_t("http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service");
         initiliased = false;
         data_source_name = "Bay of Plenty Regional Council";
-        _source_type_dict = type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip%20Total_HourTotal");
+        _source_type_dict = type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip Total_HourTotal");
         _source_units = units(1, 1);
     }
 
