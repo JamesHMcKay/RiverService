@@ -35,7 +35,7 @@ public:
         rain_units = 1.0;
     }
 
-    units(double flow_units, double stage_units) : flow_units(flow_units), stage_units(stage_units) {}
+    units(double flow_units, double stage_units) : flow_units(flow_units), stage_units(stage_units) { rain_units = 1.0; }
 
     units(double flow_units, double stage_units, double rain_units) : flow_units(flow_units), stage_units(stage_units), rain_units(rain_units) {}
 
