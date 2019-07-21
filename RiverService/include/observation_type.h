@@ -43,6 +43,7 @@ public:
         case metres: result = "metres"; break;
         case litres_second: result = "litres_second"; break;
         case celcius : result = "celcius"; break;
+        case millimetres: result = "millimetres"; break;
         default: result = "value";
         }
         return utility::conversions::to_string_t(result);
