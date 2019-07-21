@@ -45,7 +45,7 @@ void data_source::update_sources() {
     vector<feature_of_interest*> updated_features;
     while (!update_queue.empty() && update_queue.top()->next_update_time < current_time_ref) {
         feature_of_interest* temp_feature = update_queue.top();
-        wcout << "updating feature with name " << temp_feature->get_name().c_str() << endl;
+        //wcout << "updating feature with name " << temp_feature->get_name().c_str() << endl;
 
         update_feature(temp_feature);
 
@@ -57,12 +57,12 @@ void data_source::update_sources() {
         update_queue.push(feature_item);
     }
 
-    wcout << "queue is updated, the new order is:" << endl;
+    //wcout << "queue is updated, the new order is:" << endl;
     std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue_copy = update_queue;
     while (!update_queue_copy.empty()) {
         feature_of_interest* temp_feature = update_queue_copy.top();
         chrono::duration <double> time = temp_feature->next_update_time;
-        wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
+        //wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
         update_queue_copy.pop();
     }
 }
@@ -73,14 +73,10 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     // give each feature a list of types
 
     feature_to_update->set_last_checked_for_update_time();
-
-
     string lower_time = feature_to_update->get_lower_time();
     std::map<string, sensor_obs> values;
     for (auto &type : feature_to_update->get_observation_types()) {
-        wcout << "getting flow for type " << type.get_type().c_str() << endl;
         string flow_res_string = get_flow_data(feature_to_update->get_id(), lower_time, type.get_source_name());
-        
         // add a type or units parameter
         if (flow_res_string != "") {
             process_flow_response(flow_res_string, values, type.get_obs_type());
@@ -92,9 +88,7 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     for (const auto &s : values) {
         result.push_back(s.second);
     }
-    wcout << "done pushing to result " << endl;
     feature_to_update->filter_observations(result);
-    wcout << "done filtering obs" << endl;
 }
 
 std::pair<int, int> data_source::create_data_source_summary() {

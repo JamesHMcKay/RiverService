@@ -8,8 +8,7 @@ namespace utils {
     string ref_time_str() {
         system_clock::time_point current_time = system_clock::now() - std::chrono::hours(240);
         string ref_time = get_time_utc(current_time);
-        //return ref_time;
-        return "2019-06-25T01:00:00.000Z";
+        return ref_time;
     }
 
     time_t my_timegm(tm* _Tm)
@@ -33,7 +32,6 @@ namespace utils {
     string get_time_utc(chrono::system_clock::time_point time_now, string time_zone_diff) {
         int offset = std::stoi(time_zone_diff);
         time_now += -chrono::hours(offset) + chrono::seconds(1);
-        // figure out what is going on with this to_time_t function
         auto time_t_now = std::chrono::system_clock::to_time_t(time_now);
         std::ostringstream ss;
         ss << std::put_time(gmtime(&time_t_now), "%FT%TZ");
@@ -49,7 +47,6 @@ namespace utils {
             offset = std::stoi(time_zone);
         }
         system_clock::time_point first_time = utils::convert_time_str(time_str);
-        wcout << "done converting time" << endl;
         first_time += -chrono::hours(offset);
         return first_time;
     }
@@ -60,12 +57,12 @@ namespace utils {
 
         http_client client(host_url, client_config);
         auto path_query_fragment = uri.to_string();
-        wcout << "path_query_fragment " << path_query_fragment.c_str() << endl;
+        //wcout << "path_query_fragment " << path_query_fragment.c_str() << endl;
         return client.request(methods::GET, path_query_fragment).then([](task<http_response> response_task) {
             http_response response;
             try {
                 response = response_task.get();
-                std::wcout << "Response status code: " << response.status_code() << std::endl;
+                //std::wcout << "Response status code: " << response.status_code() << std::endl;
             }
             catch (const std::exception& e) {
                 wcout << "request error: " << e.what() << endl;

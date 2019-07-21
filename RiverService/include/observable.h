@@ -11,6 +11,7 @@ enum unit {
     cumecs,
     metres,
     litres_second,
+    millimetres,
     celcius,
     none
 };
@@ -26,13 +27,17 @@ enum observable: char {
 class units {
     double flow_units;
     double stage_units;
+    double rain_units;
 public:
     units() {
         flow_units = 1.0;
         stage_units = 1.0;
+        rain_units = 1.0;
     }
 
     units(double flow_units, double stage_units) : flow_units(flow_units), stage_units(stage_units) {}
+
+    units(double flow_units, double stage_units, double rain_units) : flow_units(flow_units), stage_units(stage_units), rain_units(rain_units) {}
 
     double get_units(observable obs) {
         double result;
@@ -40,6 +45,7 @@ public:
         {
         case flow: result = flow_units; break;
         case stage_height: result = stage_units; break;
+        case rainfall: result = rain_units; break;
         default: result = 1.0;
         }
         return result;
