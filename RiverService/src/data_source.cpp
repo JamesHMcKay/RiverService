@@ -57,12 +57,12 @@ void data_source::update_sources() {
         update_queue.push(feature_item);
     }
 
-    //wcout << "queue is updated, the new order is:" << endl;
+    wcout << "queue is updated, the new order is:" << endl;
     std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue_copy = update_queue;
     while (!update_queue_copy.empty()) {
         feature_of_interest* temp_feature = update_queue_copy.top();
         chrono::duration <double> time = temp_feature->next_update_time;
-        //wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
+        wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
         update_queue_copy.pop();
     }
 }
@@ -81,7 +81,6 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
         if (flow_res_string != "") {
             process_flow_response(flow_res_string, values, type.get_obs_type());
         }
-
         // generalise this function to type a "type of obs" parameter
     }
     vector<sensor_obs> result;

@@ -27,7 +27,7 @@ map<utility::string_t, utility::string_t> dictionary;
 
 const std::function<void(http_request)> handle_get_wrapped(health_tracker &health) {
     return ([&health](http_request request) {
-        TRACE(L"\nhandle GET\n");
+        //TRACE(L"\nhandle GET\n");
         auto uri = request.absolute_uri();
         auto v_path_components = web::uri::split_path(web::uri::decode(uri.path()));
         auto answer = json::value::object();
@@ -52,7 +52,7 @@ const std::function<void(http_request)> handle_get_wrapped(health_tracker &healt
 
 void handle_get(http_request request)
 {
-    TRACE(L"\nhandle GET\n");
+    //TRACE(L"\nhandle GET\n");
 
     auto answer = json::value::object();
 
@@ -138,10 +138,6 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
     }
     response[U("features")] = web::json::value::array(features);
 
-    //string last_update_time = data.get_last_updated_time_str();
-    //string_t last_update_time_t = utility::conversions::to_string_t(last_update_time);
-    //response[U("last_update_time")] = json::value(last_update_time_t);
-
     return response;
 }
 
@@ -192,7 +188,7 @@ json::value get_flow_response(data_store &data, json::value ids) {
 
 const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
     return ([&data](http_request request) {
-        TRACE("\nhandle POST\n");
+        //TRACE("\nhandle POST\n");
 
         handle_request(
             request,
