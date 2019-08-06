@@ -54,6 +54,17 @@ namespace utils {
     observable string_to_observable(string type);
 
     unit type_to_unit_niwa(observable type);
+
+    template <class T, class U>
+    std::vector<T> extract_keys(std::map<T, U> const& input_map)
+    {
+        std::vector<T> retval;
+        for (auto const& element : input_map)
+        {
+            retval.push_back(element.first);
+        }
+        return retval;
+    }
 }
 
 #endif

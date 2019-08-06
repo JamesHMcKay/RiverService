@@ -38,16 +38,21 @@ int main(int argc, char *argv[]) {
     health_tracker health;
 
     niwa_data_source niwa_source;
-    hilltop_data_source otago_source("http://gisdata.orc.govt.nz/Hilltop/data.hts", "Otago Regional Council");
-    hilltop_data_source horizons_source("http://TSData.Horizons.govt.nz/data.hts", "Horizons", units(1000,1000), type_dict("Flow", "Stage", "Water Temperature", "Rainfall"));
+    hilltop_data_source otago_source(
+        "http://gisdata.orc.govt.nz/Hilltop/data.hts",
+        "Otago Regional Council",
+        units(1,1),
+        type_dict("Flow", "Stage", "Water Temperature", "Rainfall")
+    );
+    hilltop_data_source horizons_source("http://hilltopserver.horizons.govt.nz/data.hts", "Horizons", units(1000,1000), type_dict("Flow", "Stage", "Water Temperature", "Rainfall Total (1 Hour)"));
     hilltop_data_source marlborough_source("http://hydro.marlborough.govt.nz/mdc%20data.hts", "Marlborough District Council");
-    hilltop_data_source wellington_source("http://hilltop.gw.govt.nz/data.hts", "Greater Wellington");
+    hilltop_data_source wellington_source("http://hilltop.gw.govt.nz/data.hts", "Greater Wellington", units(1, 1000), type_dict("Flow", "Stage", "Water Temperature", "Rainfall"));
     hilltop_data_source gisbourne("http://hilltop.gdc.govt.nz/data.hts", "Gisbourne District Council", units(1, 1), type_dict("Flow", "Water Level", "Water Temperature", "Rainfall"));
     hilltop_data_source taranaki("https://extranet.trc.govt.nz/getdata/merged.hts", "Taranaki");
 
     hilltop_data_source northland("http://hilltop.nrc.govt.nz/data.hts", "Northland Regional Council", units(1, 1000));
 
-    hilltop_data_source hawkes_bay("http://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Hawkes Bay Regional Council", units(1000, 1000), type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall"));
+    hilltop_data_source hawkes_bay("https://data.hbrc.govt.nz/Envirodata/EMAR.hts", "Hawkes Bay Regional Council", units(1000, 1000), type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall"));
 
     hilltop_data_source tasman("http://envdata.tasman.govt.nz/anything.hts", "Tasman District Council", units(1, 1000), type_dict("Flow", "Stage", "Water Temperature (continuous)"));
 

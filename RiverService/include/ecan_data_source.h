@@ -78,14 +78,16 @@ public:
         for (auto const & e : data_points.as_array()) {
             string_t value = e.at(U("Value")).as_string();
             string time = utility::conversions::to_utf8string(e.at(U("DateTime")).as_string());
-            double value_num = atof(utility::conversions::to_utf8string(value).c_str());
-            auto pos = result.find(time);
-            sensor_obs new_flow(value_num, time, type);
-            if (pos == result.end()) {
-                result[time] = new_flow;
-            }
-            else {
-                result[time] = pos->second + new_flow;
+            if (utility::conversions::to_utf8string(value) != "") {
+                double value_num = atof(utility::conversions::to_utf8string(value).c_str());
+                auto pos = result.find(time);
+                sensor_obs new_flow(value_num, time, type);
+                if (pos == result.end()) {
+                    result[time] = new_flow;
+                }
+                else {
+                    result[time] = pos->second + new_flow;
+                }
             }
         }
     };

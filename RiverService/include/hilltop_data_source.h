@@ -85,7 +85,7 @@ public:
 
     string get_flow_data(utility::string_t feature_id, string lower_time, string type) {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
-        wcout << "Getting flow data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
+        wcout << "Getting "<< utility::conversions::to_string_t(type).c_str()  << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
@@ -101,6 +101,48 @@ public:
         return res_string;
     };
 
+    string get_rainfall_data(utility::string_t feature_id, string lower_time, string type) {
+        string time_filter = lower_time + "/" + utils::get_distant_future_time();
+        wcout << "Getting " << utility::conversions::to_string_t(type).c_str() << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
+        http_client client(_host_url);
+        uri_builder builder;
+        builder.append_query(U("service"), U("Hilltop"));
+        builder.append_query(U("Alignment"), U("00:00"));
+        builder.append_query(U("Interval"), U("1 hour"));
+        builder.append_query(U("request"), U("GetData"));
+        builder.append_query(U("Site"), feature_id);
+
+        string_t type_of_obs = utility::conversions::to_string_t(type);
+        builder.append_query(U("Measurement"), type_of_obs);
+        builder.append_query(U("TimeInterval"), utility::conversions::to_string_t(time_filter));
+
+        string res_string = utils::get_xml_response(_host_url, builder).get();
+        return res_string;
+    };
+
+    void process_rainfall_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
+        pugi::xml_document doc;
+        pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
+
+        pugi::xml_node responses = doc.child("Hilltop").child("Measurement").child("Data");
+        for (pugi::xml_node item : responses.children("E")) {
+            string value = item.child("I1").text().get();
+            string time = item.child("T").text().get();
+            time = time + "+12:00";
+            if (value != "") {
+                double value_num = atof(value.c_str()) / _source_units.get_units(type);
+                auto pos = result.find(time);
+                sensor_obs new_flow(value_num, time, type);
+                if (pos == result.end()) {
+                    result[time] = new_flow;
+                }
+                else {
+                    result[time] = pos->second + new_flow;
+                }
+            }
+        }
+    };
+
     void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
         pugi::xml_document doc;
         pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
@@ -110,13 +152,16 @@ public:
             pugi::xml_node feature = item.child("wml2:MeasurementTVP");
             string value = feature.child("wml2:value").text().get();
             string time = feature.child("wml2:time").text().get();
-            double value_num = atof(value.c_str()) / _source_units.get_units(type);
-            auto pos = result.find(time);
-            sensor_obs new_flow(value_num, time, type);
-            if (pos == result.end()) {
-                result[time] = new_flow;
-            } else {
-                result[time] = pos->second + new_flow;
+            if (value != "") {
+                double value_num = atof(value.c_str()) / _source_units.get_units(type);
+                auto pos = result.find(time);
+                sensor_obs new_flow(value_num, time, type);
+                if (pos == result.end()) {
+                    result[time] = new_flow;
+                }
+                else {
+                    result[time] = pos->second + new_flow;
+                }
             }
         }
     };

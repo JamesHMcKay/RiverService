@@ -26,14 +26,16 @@ public:
             pugi::xml_node feature = item.child("wml2:MeasurementTVP");
             string value = feature.child("wml2:value").text().get();
             string time = feature.child("wml2:time").text().get();
-            double value_num = atof(value.c_str()) / _source_units.get_units(type);
-            auto pos = result.find(time);
-            sensor_obs new_flow(value_num, time, type);
-            if (pos == result.end()) {
-                result[time] = new_flow;
-            }
-            else {
-                result[time] = pos->second + new_flow;
+            if (value != "") {
+                double value_num = atof(value.c_str()) / _source_units.get_units(type);
+                auto pos = result.find(time);
+                sensor_obs new_flow(value_num, time, type);
+                if (pos == result.end()) {
+                    result[time] = new_flow;
+                }
+                else {
+                    result[time] = pos->second + new_flow;
+                }
             }
         }
     };

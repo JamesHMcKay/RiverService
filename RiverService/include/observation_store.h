@@ -25,6 +25,9 @@ class observation_store {
     observation<sensor_obs>* first = NULL;
     observation<sensor_obs>* last = NULL;
 
+    //vector<pair<observable, observation<sensor_obs>*>> top_by_type;
+    std::map<observable, observation<sensor_obs>*> first_by_type;
+
     void set_up(observation<sensor_obs>* obs_input) {
         first = obs_input;
         first->prev = last;
@@ -43,8 +46,16 @@ public:
         return first;
     }
 
+    observation<sensor_obs>* get_first(observable type) {
+        return first_by_type[type];
+    }
+
     observation<sensor_obs>* get_last() {
         return last;
+    }
+
+    vector<observable> get_available_types() {
+        return utils::extract_keys<observable, observation<sensor_obs>*>(first_by_type);
     }
 
     void add_to_top(sensor_obs obs) {
@@ -60,6 +71,10 @@ public:
             obs_input->prev = first;
             first->next = obs_input;
             first = obs_input;
+            vector<observable> types = obs.get_available_types();
+            for (auto &type : types) {
+                first_by_type[type] = obs_input;
+            }
         }
         length++;
     }

@@ -152,9 +152,21 @@ public:
 
     sensor_obs get_latest_sensor_obs () {
         sensor_obs result;
-        if (obs_store.get_first() != NULL) {
-            result = obs_store.get_first()->value;
+        vector<observable> avail_types = obs_store.get_available_types();
+        vector<pair<double, observable>> values;
+
+        for (auto const& type : avail_types) {
+            if (obs_store.get_first(type) != NULL) {
+                sensor_obs temp = obs_store.get_first(type)->value;
+                values.push_back(make_pair(temp.get_observable(type), type));
+            }
         }
+
+        if (obs_store.get_first() != NULL) {
+            string last_updated = obs_store.get_first()->value.get_time_str();
+            result = sensor_obs(values, last_updated);
+        }
+
         return result;
     }
 
