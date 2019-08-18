@@ -63,6 +63,13 @@ int main(int argc, char *argv[]) {
         type_dict("Flow", "Water Level", "Water Temperature", "Rainfall")
     );
 
+    hilltop_data_source westcoast(
+        "http://hilltop.wcrc.govt.nz/orbica.hts",
+        "West Coast Regional Council",
+        units(1, 1000),
+        type_dict("Flow", "Stage", "Water Temperature", "Rainfall")
+    );
+
     bop_data_source bop;
 
     akl_data_source auckland;
@@ -70,6 +77,7 @@ int main(int argc, char *argv[]) {
     ecan_data_source ecan;
 
     vector<data_source*> data_sources;
+    data_sources.push_back(&westcoast);
     data_sources.push_back(&otago_source);
     data_sources.push_back(&wellington_source);
     data_sources.push_back(&taranaki);
