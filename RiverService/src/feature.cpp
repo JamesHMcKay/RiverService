@@ -24,13 +24,17 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
             obs_store.add_to_top(obs[i]);
         }
     }
-    if (num_of_obs > 2) {
-        set_update_time(obs[num_of_obs - 1], obs[num_of_obs - 2]);
-    } else {
-        system_clock::time_point current_time = system_clock::now();
-        chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
-        next_update_time = current_time_ref + tolerance;
-    }
+    //if (num_of_obs > 2) {
+    //    set_update_time(obs[num_of_obs - 1], obs[num_of_obs - 2]);
+    //} else {
+    //    system_clock::time_point current_time = system_clock::now();
+    //    chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
+    //    next_update_time = current_time_ref + tolerance;
+    //}
+
+    system_clock::time_point current_time = system_clock::now();
+    chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
+    next_update_time = current_time_ref + tolerance;
 
     obs_store.remove_old_points(chrono::hours(720));
 }
