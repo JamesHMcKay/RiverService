@@ -110,13 +110,10 @@ int main(int argc, char *argv[]) {
     );
 
     bop_data_source bop;
-
     akl_data_source auckland;
-
     ecan_data_source ecan;
-
     niwa_data_source niwa_source;
-
+    
     vector<data_source*> data_sources;
     data_sources.push_back(&gisbourne);
     data_sources.push_back(&westcoast);
@@ -132,7 +129,7 @@ int main(int argc, char *argv[]) {
     data_sources.push_back(&niwa_source);
     data_sources.push_back(&auckland);
     data_sources.push_back(&ecan);
-    data_sources.push_back(&northland);
+    //data_sources.push_back(&northland);
 
     if (const char* env_p = std::getenv("HOSTNAME")) {
         health.set_id(env_p);
