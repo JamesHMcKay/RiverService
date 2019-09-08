@@ -50,7 +50,7 @@ void data_source::update_sources() {
 
     system_clock::time_point current_time = system_clock::now();
     // get flows
-    wcout << "updating flows" << endl;
+    wcout << "updating data for:" << data_source_name.c_str() << endl;
     chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
     wcout << "The current time reference is " << current_time_ref.count() << endl;
 
@@ -69,12 +69,12 @@ void data_source::update_sources() {
         update_queue.push(feature_item);
     }
 
-    wcout << "queue is updated, the new order is:" << endl;
+    //wcout << "queue is updated, the new order is:" << endl;
     std::priority_queue<feature_of_interest*, std::vector<feature_of_interest*>, OrderUpdateQueue> update_queue_copy = update_queue;
     while (!update_queue_copy.empty()) {
         feature_of_interest* temp_feature = update_queue_copy.top();
         chrono::duration <double> time = temp_feature->next_update_time;
-        wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
+        //wcout << temp_feature->get_name().c_str() << ", with next update time = " << time.count() << endl;
         update_queue_copy.pop();
     }
 }

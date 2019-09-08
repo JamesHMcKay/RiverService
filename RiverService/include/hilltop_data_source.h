@@ -85,7 +85,7 @@ public:
 
     string get_flow_data(utility::string_t feature_id, string lower_time, string type) {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
-        wcout << "Getting "<< utility::conversions::to_string_t(type).c_str()  << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
+        //wcout << "Getting "<< utility::conversions::to_string_t(type).c_str()  << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
@@ -103,7 +103,7 @@ public:
 
     string get_rainfall_data(utility::string_t feature_id, string lower_time, string type) {
         string time_filter = lower_time + "/" + utils::get_distant_future_time();
-        wcout << "Getting " << utility::conversions::to_string_t(type).c_str() << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
+        //wcout << "Getting " << utility::conversions::to_string_t(type).c_str() << " data, time filter = " << utility::conversions::to_string_t(time_filter).c_str() << endl;
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("Hilltop"));
