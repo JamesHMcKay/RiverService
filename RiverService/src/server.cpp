@@ -257,7 +257,7 @@ void server_session::create_session(data_store &data, utility::string_t port, he
             // return a value that is the time until the next update is required
             // for use in the sleep function
             data.update_sources();
-            std::this_thread::sleep_for(std::chrono::seconds(20));
+            std::this_thread::sleep_for(std::chrono::minutes(30));
         }
     }
     catch (exception const & e) {
