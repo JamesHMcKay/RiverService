@@ -15,3 +15,8 @@ docker-build:
   - docker pull jhmckay93/riverservice:latest || true
   - docker build --cache-from jhmckay93/riverservice:latest --tag jhmckay93/riverservice --iidfile imageid.txt .
   - docker push jhmckay93/riverservice
+  - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
+  - docker push jhmckay93/riverservice
+  - apk add --no-cache curl
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/riverservice/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
