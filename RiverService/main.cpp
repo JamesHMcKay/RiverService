@@ -13,7 +13,7 @@
 #include "niwa_data_source.h"
 #include "hilltop_data_source.h"
 #include "ecan_data_source.h"
-#include "akl_data_source.h"
+#include "kiwis_data_source.h"
 #include "bop_data_source.h"
 
 #include <iostream>
@@ -110,11 +110,27 @@ int main(int argc, char *argv[]) {
     );
 
     bop_data_source bop;
-    akl_data_source auckland;
+    kiwis_data_source auckland(
+        "http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS",
+        "Auckland Regional Council",
+        units(1, 1),
+        type_dict("Stream Flow Rate", "Stream Water Level", "Water Temperature"),
+        "RAW"
+    );
+
+    kiwis_data_source waikato(
+        "http://envdata.waikatoregion.govt.nz:8080/KiWIS/KiWIS",
+        "Waikato Regional Council",
+        units(1, 1),
+        type_dict("Discharge", "Water+Level", "Water Temperature", "Precipitation"),
+        "Cmd.P"
+    );
+
     ecan_data_source ecan;
     niwa_data_source niwa_source;
     
     vector<data_source*> data_sources;
+    data_sources.push_back(&waikato);
     data_sources.push_back(&gisbourne);
     data_sources.push_back(&westcoast);
     data_sources.push_back(&otago_source);

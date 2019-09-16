@@ -7,18 +7,17 @@
 using namespace std;
 using namespace utility::conversions;
 
-class akl_data_source : public hilltop_data_source {
+class kiwis_data_source : public hilltop_data_source {
+    string _procedure;
+
 public:
-    akl_data_source() {
-        _host_url = utility::conversions::to_string_t("http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS");
+    kiwis_data_source(string host_url, string source_name, units source_units = units(), type_dict source_type_dict = type_dict(), string procedure = "RAW") {
+        _host_url = utility::conversions::to_string_t(host_url);
         initiliased = false;
-        data_source_name = "Auckland Regional Council";
-        _source_type_dict = type_dict("Stream Flow Rate", "Stream Water Level", "Water Temperature");
-        _source_units = units(1, 1);
-        // the following deprecated
-        _observation_types.push_back(observation_type(flow, cumecs, "Flow"));
-        _observation_types.push_back(observation_type(stage_height, metres, "Stage"));
-        _observation_types.push_back(observation_type(temperature, celcius, "Water Temperature (continuous)"));
+        data_source_name = source_name;
+        _source_type_dict = source_type_dict;
+        _source_units = source_units;
+        _procedure = procedure;
     }
 
 
@@ -47,7 +46,7 @@ public:
 
     string get_flow_data(utility::string_t feature_id, string lower_time, string type) {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
-        wcout << "Getting flow data for site = " << feature_id.c_str() << endl;
+        wcout << "Getting data for site = " << feature_id.c_str() << endl;
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
@@ -55,7 +54,7 @@ public:
         builder.append_query(U("FeatureOfInterest"), feature_id);
         builder.append_query(U("datasource"), U("0"));
         builder.append_query(U("version"), U("2.0"));
-        builder.append_query(U("Procedure"), U("RAW"));
+        builder.append_query(U("Procedure"), utility::conversions::to_string_t(_procedure));
 
         // make Flow a parameter
         string_t type_of_obs = utility::conversions::to_string_t(type);

@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 message(status "${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories(src include)
-set(HEADER_FILES  include/feature.h include/server.h include/utils.h include/data_source.h include/data_store.h include/lat_lon.h include/observation_store.h include/sensor_obs.h include/niwa_data_source.h include/hilltop_data_source.h include/observable.h include/observation_type.h include/ecan_data_source.h include/bop_data_source.h include/akl_data_source.h)
+set(HEADER_FILES  include/feature.h include/server.h include/utils.h include/data_source.h include/data_store.h include/lat_lon.h include/observation_store.h include/sensor_obs.h include/niwa_data_source.h include/hilltop_data_source.h include/observable.h include/observation_type.h include/ecan_data_source.h include/bop_data_source.h include/kiwis_data_source.h)
 set(SRC_FILES  main.cpp src/server.cpp src/utils.cpp src/data_source.cpp src/feature.cpp src/data_store.cpp)
 
 
