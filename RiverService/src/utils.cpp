@@ -9,7 +9,7 @@ namespace utils {
         system_clock::time_point current_time = system_clock::now() - std::chrono::hours(240);
         string ref_time = get_time_utc(current_time);
         //return ref_time;
-        return "2019-09-10T01:00:00.000Z";
+        return "2019-09-22T01:00:00.000Z";
     }
 
     time_t my_timegm(tm* _Tm)
