@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
     data_sources.push_back(&bop);
     data_sources.push_back(&tasman);
     data_sources.push_back(&niwa_source);
-    data_sources.push_back(&auckland);
+    //data_sources.push_back(&auckland);
     data_sources.push_back(&ecan);
     //data_sources.push_back(&northland);
 
