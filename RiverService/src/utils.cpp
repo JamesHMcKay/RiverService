@@ -9,7 +9,7 @@ namespace utils {
         system_clock::time_point current_time = system_clock::now() - std::chrono::hours(240);
         string ref_time = get_time_utc(current_time);
         //return ref_time;
-        return "2019-09-22T01:00:00.000Z";
+        return "2019-10-08T01:00:00.000Z";
     }
 
     time_t my_timegm(tm* _Tm)
@@ -67,6 +67,7 @@ namespace utils {
             }
             catch (const std::exception& e) {
                 wcout << "request error: " << e.what() << endl;
+                wcout << "Response status code: " << response.status_code() << std::endl;
                 response.set_status_code(status_codes::RequestTimeout);
             }
             string result = "";

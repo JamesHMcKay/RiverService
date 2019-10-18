@@ -58,8 +58,11 @@ void data_source::update_sources() {
     while (!update_queue.empty() && update_queue.top()->next_update_time < current_time_ref) {
         feature_of_interest* temp_feature = update_queue.top();
         //wcout << "updating feature with name " << temp_feature->get_name().c_str() << endl;
-
-        update_feature(temp_feature);
+        try {
+            update_feature(temp_feature);
+        } catch (const std::exception& e) {
+            std::cout << "exception was caught '" << e.what() << "'\n";
+        }
 
         update_queue.pop();
         updated_features.push_back(temp_feature);

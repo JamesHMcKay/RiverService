@@ -20,7 +20,6 @@ public:
         _procedure = procedure;
     }
 
-
     void process_flow_response(string flow_res_string, std::map<string, sensor_obs> &result, observable type) {
         pugi::xml_document doc;
         pugi::xml_parse_result flow_response_all = doc.load_string(flow_res_string.c_str());
@@ -46,7 +45,7 @@ public:
 
     string get_flow_data(utility::string_t feature_id, string lower_time, string type) {
         string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
-        wcout << "Getting data for site = " << feature_id.c_str() << endl;
+        //wcout << "Getting data for site = " << feature_id.c_str() << endl;
         http_client client(_host_url);
         uri_builder builder;
         builder.append_query(U("service"), U("SOS"));
