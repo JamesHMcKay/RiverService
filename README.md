@@ -36,6 +36,6 @@ Get a SSL certificate using:
 
 sudo certbot --standalone -d openriverdata.com -d www.openriverdata.com certonly
 
-This will put the certicates in the right place.
+This will put the certificates in the right place.
 
 Add the files in the server_files directory into the $HOME directory of the lightsail instance.  Once the container has built, run the update_script.sh to pull the container and start it within the nginx container.
