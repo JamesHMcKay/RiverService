@@ -34,7 +34,7 @@ Under the networking tab enable HTTPS traffic.
 
 Get a SSL certificate using:
 
-certbot --standalone -d openriverdata.com
+certbot --standalone -d openriverdata.com certonly
 
 This will put the certicates in the right place.
 
