@@ -26,3 +26,16 @@ All requests are POST requests with header "Content-Type:application/json" and b
     "id": ["15341"]
 }
 ```
+## Deployment
+
+Set up a lightsail instance and use the launch_script file included in this repository.
+
+Under the networking tab enable HTTPS traffic.
+
+Get a SSL certificate using:
+
+certbot --standalone -d openriverdata.com
+
+This will put the certicates in the right place.
+
+Add the files in the server_files directory into the $HOME directory of the lightsail instance.  Once the container has built, run the update_script.sh to pull the container and start it within the nginx container.
