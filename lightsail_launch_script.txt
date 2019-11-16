@@ -9,11 +9,11 @@ sudo service docker start
 
 cd home/ubuntu/
 touch update_script.sh 
-echo "sudo docker stop riverservice" >> update_script.sh
+echo "sudo docker-compose down" >> update_script.sh
 echo "sudo docker login --username=jhmckay93 -p=riverservice1037" >> update_script.sh
 echo "sudo docker pull jhmckay93/riverservice:latest" >> update_script.sh
 echo "sudo docker system prune -f" >> update_script.sh
-echo "sudo docker run -d --name riverservice -e PORT=80 -p 80:80 -i -t jhmckay93/riverservice:latest" >> update_script.sh
+echo "sudo docker-compose up -d" >> update_script.sh
 sudo chmod u+x update_script.sh
 
 ./update_script.sh
