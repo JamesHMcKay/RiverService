@@ -130,22 +130,22 @@ int main(int argc, char *argv[]) {
     niwa_data_source niwa_source;
     
     vector<data_source*> data_sources;
-    //data_sources.push_back(&waikato);
-    //data_sources.push_back(&gisbourne);
-    //data_sources.push_back(&westcoast);
-    //data_sources.push_back(&otago_source);
-    //data_sources.push_back(&wellington_source);
-    //data_sources.push_back(&taranaki);
-    //data_sources.push_back(&marlborough_source);
+    data_sources.push_back(&waikato);
+    data_sources.push_back(&gisbourne);
+    data_sources.push_back(&westcoast);
+    data_sources.push_back(&otago_source);
+    data_sources.push_back(&wellington_source);
+    data_sources.push_back(&taranaki);
+    data_sources.push_back(&marlborough_source);
     data_sources.push_back(&horizons_source);
-    //data_sources.push_back(&southland);
+    data_sources.push_back(&southland);
     data_sources.push_back(&hawkes_bay);
     data_sources.push_back(&bop);
     data_sources.push_back(&tasman);
-    //data_sources.push_back(&niwa_source);
-    //data_sources.push_back(&auckland);
+    data_sources.push_back(&niwa_source);
+    data_sources.push_back(&auckland);
     data_sources.push_back(&ecan);
-    //data_sources.push_back(&northland);
+    data_sources.push_back(&northland);
 
     if (const char* env_p = std::getenv("HOSTNAME")) {
         health.set_id(env_p);
