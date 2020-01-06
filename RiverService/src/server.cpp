@@ -89,7 +89,7 @@ void handle_request(
     })
         .wait();
 
-    request.reply(status_codes::OK, answer);
+    //request.reply(status_codes::OK, answer);
 }
 
 json::value get_available_features(data_store &data, vector<string_t> requested_types) {
@@ -189,35 +189,39 @@ json::value get_flow_response(data_store &data, json::value ids) {
 const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
     return ([&data](http_request request) {
         //TRACE("\nhandle POST\n");
+        try {
+            handle_request(
+                request,
+                [&data, &request](json::value const & jvalue, json::value & answer) {
+                json::value action = jvalue.at(U("action"));
+                string_t action_str = action.as_string();
 
-        handle_request(
-            request,
-            [&data, &request](json::value const & jvalue, json::value & answer) {
-            json::value action = jvalue.at(U("action"));
-            string_t action_str = action.as_string();
-
-            if (action_str == utility::conversions::to_string_t("get_flows")) {
-                json::value ids = jvalue.at(U("id"));
-                answer = get_flow_response(data, ids);
-            }
-
-            if (action_str == utility::conversions::to_string_t("get_features")) {
-                json::value filters = jvalue.at(U("filters"));
-                vector<string_t> requested_types;
-
-                for (auto const & e : filters.as_array()) {
-                    if (e.is_string()) {
-                        requested_types.push_back(e.as_string());
-                    }
+                if (action_str == utility::conversions::to_string_t("get_flows")) {
+                    json::value ids = jvalue.at(U("id"));
+                    answer = get_flow_response(data, ids);
                 }
-                answer = get_available_features(data, requested_types);
-            }
 
-            http_response response(status_codes::OK);
-            response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
-            response.set_body(answer);
-            request.reply(response);
-        });
+                if (action_str == utility::conversions::to_string_t("get_features")) {
+                    json::value filters = jvalue.at(U("filters"));
+                    vector<string_t> requested_types;
+
+                    for (auto const & e : filters.as_array()) {
+                        if (e.is_string()) {
+                            requested_types.push_back(e.as_string());
+                        }
+                    }
+                    answer = get_available_features(data, requested_types);
+                }
+
+                http_response response(status_codes::OK);
+                response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
+                response.set_body(answer);
+                request.reply(response);
+            });
+        }
+        catch (http_exception const & e) {
+            wcout << utility::conversions::to_string_t(e.what()).c_str() << endl;
+        }
     });
 }
 
