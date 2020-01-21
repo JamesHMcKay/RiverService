@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 
     hilltop_data_source gisbourne(
         "http://hilltop.gdc.govt.nz/data.hts",
-        "Gisbourne District Council",
+        "Gisborne District Council",
         units(1, 1),
         type_dict("Flow", "Water Level", "Water Temperature", "Rainfall")
     );
