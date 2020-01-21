@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 
     hilltop_data_source hawkes_bay(
         "https://data.hbrc.govt.nz/Envirodata/EMAR.hts",
-        "Hawkes Bay Regional Council",
+        "Hawke's Bay Regional Council",
         units(1000, 1000),
         type_dict("Flow [Water Level]", "Stage", "Water Temperature", "Rainfall")
     );
