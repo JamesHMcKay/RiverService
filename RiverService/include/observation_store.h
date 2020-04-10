@@ -55,7 +55,12 @@ public:
     }
 
     vector<observable> get_available_types() {
-        return utils::extract_keys<observable, observation<sensor_obs>*>(first_by_type);
+        if (first != NULL) {
+            return first->value.get_available_types();
+        }
+        return vector<observable>();
+        
+        //return utils::extract_keys<observable, observation<sensor_obs>*>(first_by_type);
     }
 
     void add_to_top(sensor_obs obs) {

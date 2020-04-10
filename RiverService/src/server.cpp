@@ -125,7 +125,11 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
             wcout << "debug location 2 " << endl;
             std::vector<web::json::value> obs_types;
             wcout << "debug location 3 " << endl;
-            sensor_obs latest_values = feature->get_latest_sensor_obs();
+            if (feature->get_id() == utility::conversions::to_string_t("64604")) {
+                wcout << "debug location 3b " << endl;
+            }
+
+            sensor_obs latest_values = feature->get_latest_sensor_obs();  // error on this line
             wcout << "debug location 4 " << endl;
             feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
             wcout << "debug location 5 " << endl;
