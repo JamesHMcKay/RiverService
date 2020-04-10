@@ -106,7 +106,7 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
     web::json::value response;
     std::vector<web::json::value> features;
     for (auto const & item : feature_map) {
-        try {
+        //try {
             bool passed_filter = false;
             feature_of_interest* feature = item.second;
             web::json::value feature_item;
@@ -153,14 +153,14 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
                 feature_item[U("observables")] = web::json::value::array(obs_types);
                 features.push_back(feature_item);
             }
-        } catch (const std::runtime_error& e) {
-            // this executes if f() throws std::underflow_error (base class rule)
-            std::cout << "runtime error caught " <<'\n';
-        } catch (const std::exception& e) {
-            std::cout << "exception caught: " << e.what() << '\n';
-        } catch (...) {
-            wcout << "unknown exception caught " << endl;
-        }
+        //} catch (const std::runtime_error& e) {
+        //    // this executes if f() throws std::underflow_error (base class rule)
+        //    std::cout << "runtime error caught " <<'\n';
+        //} catch (const std::exception& e) {
+        //    std::cout << "exception caught: " << e.what() << '\n';
+        //} catch (...) {
+        //    wcout << "unknown exception caught " << endl;
+        //}
     }
     response[U("features")] = web::json::value::array(features);
 
