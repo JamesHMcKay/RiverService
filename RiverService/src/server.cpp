@@ -92,82 +92,49 @@ void handle_request(
     //request.reply(status_codes::OK, answer);
 }
 
-
-
-
-
-
-
-
-
-
 json::value get_available_features(data_store &data, vector<string_t> requested_types) {
     map<utility::string_t, feature_of_interest*> feature_map = data.feature_map;
     web::json::value response;
     std::vector<web::json::value> features;
     for (auto const & item : feature_map) {
-        //try {
             bool passed_filter = false;
             feature_of_interest* feature = item.second;
             web::json::value feature_item;
             feature_item[U("id")] = json::value(feature->get_id());
             feature_item[U("name")] = json::value::string(feature->get_name());
 
-            wcout << "getting feature " << feature->get_name().c_str() << endl;
-
             lat_lon position = feature->get_position();
             feature_item[U("location")] = position.get_lat_lon();
             feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
             feature_item[U("region")] = json::value::string(feature->get_region());
             feature_item[U("river_name")] = json::value::string(feature->get_river_name());
-            wcout << "debug location 1 " << endl;
             vector<observation_type> observation_types = feature->get_observation_types();
-            wcout << "debug location 2 " << endl;
             std::vector<web::json::value> obs_types;
-            wcout << "debug location 3 " << endl;
-            if (feature->get_id() == utility::conversions::to_string_t("64604")) {
-                wcout << "debug location 3b " << endl;
-            }
 
             sensor_obs latest_values = feature->get_latest_sensor_obs();  // error on this line
-            wcout << "debug location 4 " << endl;
             feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
-            wcout << "debug location 5 " << endl;
             vector<observable> available_types = latest_values.get_available_types();
-            wcout << "debug location 6 " << endl;
             for (unsigned int i = 0; i < observation_types.size(); i++) {
                 web::json::value obs_item;
                 
                 auto& type = observation_types[i];
                 if (std::find(available_types.begin(), available_types.end(), type.get_obs_type()) != available_types.end()) {
-                    
                     obs_item[U("type")] = json::value(type.get_type());
                     obs_item[U("units")] = json::value(type.get_units());
                     obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
                     obs_types.push_back(obs_item);
                     for (auto &requested_type : requested_types) {
-                        
                         if (requested_type == type.get_type()) {
-                            
                             passed_filter = true;
                         }
                     }
                 }
             }
-
-            wcout << "done getting feature " << feature->get_name().c_str() << endl;
             if (passed_filter) {
                 feature_item[U("observables")] = web::json::value::array(obs_types);
                 features.push_back(feature_item);
             }
-        //} catch (const std::runtime_error& e) {
-        //    // this executes if f() throws std::underflow_error (base class rule)
-        //    std::cout << "runtime error caught " <<'\n';
-        //} catch (const std::exception& e) {
-        //    std::cout << "exception caught: " << e.what() << '\n';
-        //} catch (...) {
-        //    wcout << "unknown exception caught " << endl;
-        //}
+
     }
     response[U("features")] = web::json::value::array(features);
 
@@ -229,15 +196,12 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                 json::value action = jvalue.at(U("action"));
                 string_t action_str = action.as_string();
 
-                wcout << "handling post request for action " << action_str.c_str() << endl;
-
                 if (action_str == utility::conversions::to_string_t("get_flows")) {
                     json::value ids = jvalue.at(U("id"));
                     answer = get_flow_response(data, ids);
                 }
 
                 if (action_str == utility::conversions::to_string_t("get_features")) {
-                    wcout << "getting features " << endl;
                     json::value filters = jvalue.at(U("filters"));
                     vector<string_t> requested_types;
 
@@ -246,7 +210,6 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                             requested_types.push_back(e.as_string());
                         }
                     }
-                    wcout << "getting available features " << endl;
                     answer = get_available_features(data, requested_types);
                 }
 
