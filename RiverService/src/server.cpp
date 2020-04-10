@@ -103,6 +103,8 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
         feature_item[U("id")] = json::value(feature->get_id());
         feature_item[U("name")] = json::value::string(feature->get_name());
 
+        wcout << "getting feature " << feature->get_name().c_str() << endl;
+
         lat_lon position = feature->get_position();
         feature_item[U("location")] = position.get_lat_lon();
         feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
@@ -131,6 +133,7 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
                 }
             }
         }
+        wcout << "done getting feature " << feature->get_name().c_str() << endl;
         if (passed_filter) {
             feature_item[U("observables")] = web::json::value::array(obs_types);
             features.push_back(feature_item);
@@ -196,12 +199,15 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                 json::value action = jvalue.at(U("action"));
                 string_t action_str = action.as_string();
 
+                wcout << "handling post request for action " << action_str.c_str() << endl;
+
                 if (action_str == utility::conversions::to_string_t("get_flows")) {
                     json::value ids = jvalue.at(U("id"));
                     answer = get_flow_response(data, ids);
                 }
 
                 if (action_str == utility::conversions::to_string_t("get_features")) {
+                    wcout << "getting features " << endl;
                     json::value filters = jvalue.at(U("filters"));
                     vector<string_t> requested_types;
 
@@ -210,6 +216,7 @@ const std::function<void(http_request)> handle_post_wrapped(data_store &data) {
                             requested_types.push_back(e.as_string());
                         }
                     }
+                    wcout << "getting available features " << endl;
                     answer = get_available_features(data, requested_types);
                 }
 
