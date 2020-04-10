@@ -127,31 +127,36 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
             feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
 
             vector<observable> available_types = latest_values.get_available_types();
-
+            wcout << "debug location 1 " << endl;
             for (unsigned int i = 0; i < observation_types.size(); i++) {
                 web::json::value obs_item;
+                wcout << "debug location 2 " << endl;
                 auto& type = observation_types[i];
                 if (std::find(available_types.begin(), available_types.end(), type.get_obs_type()) != available_types.end()) {
+                    wcout << "debug location 3 " << endl;
                     obs_item[U("type")] = json::value(type.get_type());
                     obs_item[U("units")] = json::value(type.get_units());
                     obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
                     obs_types.push_back(obs_item);
                     for (auto &requested_type : requested_types) {
+                        wcout << "debug location 4 " << endl;
                         if (requested_type == type.get_type()) {
+                            wcout << "debug location 5 " << endl;
                             passed_filter = true;
                         }
                     }
                 }
             }
 
-
             wcout << "done getting feature " << feature->get_name().c_str() << endl;
             if (passed_filter) {
                 feature_item[U("observables")] = web::json::value::array(obs_types);
                 features.push_back(feature_item);
             }
-        }
-        catch (const std::exception& e) {
+        } catch (const std::runtime_error& e) {
+            // this executes if f() throws std::underflow_error (base class rule)
+            std::cout << "runtime error caught " <<'\n';
+        } catch (const std::exception& e) {
             std::cout << "exception caught: " << e.what() << '\n';
         } catch (...) {
             wcout << "unknown exception caught " << endl;
