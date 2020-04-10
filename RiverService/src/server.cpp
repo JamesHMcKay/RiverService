@@ -120,28 +120,31 @@ json::value get_available_features(data_store &data, vector<string_t> requested_
             feature_item[U("data_source")] = json::value::string(feature->get_data_source_name());
             feature_item[U("region")] = json::value::string(feature->get_region());
             feature_item[U("river_name")] = json::value::string(feature->get_river_name());
-
-            vector<observation_type> observation_types = feature->get_observation_types();
-            std::vector<web::json::value> obs_types;
-            sensor_obs latest_values = feature->get_latest_sensor_obs();
-            feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
-
-            vector<observable> available_types = latest_values.get_available_types();
             wcout << "debug location 1 " << endl;
+            vector<observation_type> observation_types = feature->get_observation_types();
+            wcout << "debug location 2 " << endl;
+            std::vector<web::json::value> obs_types;
+            wcout << "debug location 3 " << endl;
+            sensor_obs latest_values = feature->get_latest_sensor_obs();
+            wcout << "debug location 4 " << endl;
+            feature_item[U("last_updated")] = json::value::string(latest_values.get_time());
+            wcout << "debug location 5 " << endl;
+            vector<observable> available_types = latest_values.get_available_types();
+            wcout << "debug location 6 " << endl;
             for (unsigned int i = 0; i < observation_types.size(); i++) {
                 web::json::value obs_item;
-                wcout << "debug location 2 " << endl;
+                
                 auto& type = observation_types[i];
                 if (std::find(available_types.begin(), available_types.end(), type.get_obs_type()) != available_types.end()) {
-                    wcout << "debug location 3 " << endl;
+                    
                     obs_item[U("type")] = json::value(type.get_type());
                     obs_item[U("units")] = json::value(type.get_units());
                     obs_item[U("latest_value")] = json::value(latest_values.get_observable(type.get_obs_type()));
                     obs_types.push_back(obs_item);
                     for (auto &requested_type : requested_types) {
-                        wcout << "debug location 4 " << endl;
+                        
                         if (requested_type == type.get_type()) {
-                            wcout << "debug location 5 " << endl;
+                            
                             passed_filter = true;
                         }
                     }
