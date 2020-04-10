@@ -5,6 +5,7 @@ echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc
 sudo apt-get update
 sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
 sudo apt-get install -y docker-engine
+sudo apt install gnupg2 pass
 sudo service docker start
 
 cd home/ubuntu/
