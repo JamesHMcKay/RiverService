@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 
     hilltop_data_source taranaki(
         "https://extranet.trc.govt.nz/getdata/merged.hts",
-        "Taranaki"
+        "Taranaki Regional Council"
     );
 
     hilltop_data_source northland(
