@@ -45,8 +45,8 @@ int main(int argc, char *argv[]) {
     );
 
     hilltop_data_source horizons_source(
-        "http://hilltopserver.horizons.govt.nz/data.hts",
-        "Horizons", units(1000,1000),
+        "https://hilltopserver.horizons.govt.nz/data.hts",
+        "Horizons", units(1000, 1000),
         type_dict("Flow", "Stage", "Water Temperature", "Rainfall Total (1 Hour)")
     );
 
