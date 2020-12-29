@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && apt-get install -y g++ make wget libboost-all-dev git
 RUN apt-get install cmake
 RUN apt-get install -y libssl-dev
