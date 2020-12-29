@@ -5,7 +5,7 @@
 #if defined(WIN32) || defined(_WIN32)
 #include <xlocale>
 #else
-#include <xlocale.h>
+#include <locale.h>
 #endif
 
 #include "feature.h"
