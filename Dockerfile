@@ -1,7 +1,6 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -y && apt-get install -y g++ make wget libboost-all-dev git
-RUN apt-get install cmake
+RUN apt-get update -y && apt-get install -y g++ make wget libboost-all-dev git cmake
 RUN apt-get install -y libssl-dev
 RUN apt-get install -y libcpprest-dev
 RUN wget https://github.com/zeux/pugixml/releases/download/v1.9/pugixml-1.9.tar.gz && tar xvzf pugixml-1.9.tar.gz && cd pugixml-1.9 && mkdir build && cd build && cmake .. && make && cd ../..
