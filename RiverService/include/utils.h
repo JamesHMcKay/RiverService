@@ -49,6 +49,8 @@ namespace utils {
 
     pplx::task<string> get_xml_response(string_t host_url, uri_builder uri);
 
+    pplx::task<string> parse_xml_response(http_client client, string path_query_fragment);
+
     string observable_to_string(observable type);
 
     observable string_to_observable(string type);

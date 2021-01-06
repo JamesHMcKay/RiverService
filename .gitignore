@@ -35,3 +35,12 @@
 Debug/
 .vs
 RiverService/Debug
+
+#CMake files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+RiverService/CMakeCache.txt
+RiverService/CMakeFiles/
+crest
+cmake_install.cmake

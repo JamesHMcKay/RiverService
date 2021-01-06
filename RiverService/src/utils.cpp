@@ -52,18 +52,11 @@ namespace utils {
         return first_time;
     }
 
-    pplx::task<string> get_xml_response(string_t host_url, uri_builder uri) {
-        web::http::client::http_client_config client_config;
-        client_config.set_timeout(std::chrono::seconds(10));
-
-        http_client client(host_url, client_config);
-        auto path_query_fragment = uri.to_string();
-        //wcout << "path_query_fragment " << path_query_fragment.c_str() << endl;
-        return client.request(methods::GET, path_query_fragment).then([](task<http_response> response_task) {
+    pplx::task<string> parse_xml_response(http_client client, string path_query_fragment) {
+      return client.request(methods::GET, path_query_fragment).then([](task<http_response> response_task) {
             http_response response;
             try {
                 response = response_task.get();
-                //std::wcout << "Response status code: " << response.status_code() << std::endl;
             }
             catch (const std::exception& e) {
                 wcout << "request error: " << e.what() << endl;
@@ -86,6 +79,14 @@ namespace utils {
             }
             return result;
         });
+    }
+
+    pplx::task<string> get_xml_response(string_t host_url, uri_builder uri) {
+        web::http::client::http_client_config client_config;
+        client_config.set_timeout(std::chrono::seconds(10));
+        http_client client(host_url, client_config);
+        auto path_query_fragment = uri.to_string();
+        return parse_xml_response(client, path_query_fragment);
     }
 
     string observable_to_string(observable type) {
