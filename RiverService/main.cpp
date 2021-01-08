@@ -1,8 +1,4 @@
-#if defined(WIN32) || defined(_WIN32)
-#include <xlocale>
-#else
 #include <locale.h>
-#endif
 #include "server.h"
 #include "pugixml.hpp"
 #include "feature.h"
@@ -130,12 +126,13 @@ int main(int argc, char *argv[]) {
     niwa_data_source niwa_source;
     
     vector<data_source*> data_sources;
+    data_sources.push_back(&wellington_source);
     data_sources.push_back(&ecan);
     data_sources.push_back(&otago_source);
     data_sources.push_back(&waikato);
     data_sources.push_back(&gisbourne);
     data_sources.push_back(&westcoast);
-    data_sources.push_back(&wellington_source);
+    
     data_sources.push_back(&taranaki);
     data_sources.push_back(&marlborough_source);
     data_sources.push_back(&horizons_source);

@@ -2,30 +2,17 @@
 #define DATA_SOURCE_H
 
 #include <iostream>
-#if defined(WIN32) || defined(_WIN32)
-#include <xlocale>
-#else
 #include <locale.h>
-#endif
 
 #include "feature.h"
 #include "observation_type.h"
 
-#include "cpprest/containerstream.h"
-#include "cpprest/filestream.h"
-#include "cpprest/http_client.h"
-#include "cpprest/json.h"
-#include "cpprest/producerconsumerstream.h"
 #include <iostream>
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 
-#include "pugixml.hpp"
 #include <string>
 
-using namespace web::http;
-using namespace web::http::client;
-using namespace web::json;
 
 using namespace std;
 

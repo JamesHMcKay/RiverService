@@ -6,10 +6,7 @@ using namespace chrono;
 
 namespace utils {
     string ref_time_str() {
-        system_clock::time_point current_time = system_clock::now() - std::chrono::hours(240);
-        string ref_time = get_time_utc(current_time);
-        //return ref_time;
-        return "2020-12-01T01:00:00.000Z";
+        return "2000-12-01T01:00:00.000Z";
     }
 
     time_t my_timegm(tm* _Tm)

@@ -59,9 +59,8 @@ public:
             double lon = e.at(U("longitude")).as_double();
             string_t data_source_name = e.at(U("agency_name")).as_string();
 
-            feature_of_interest * new_feature;
-            new_feature = new feature_of_interest(name, id_t, lat_lon(lat, lon), data_source_name, region, river_name);
-            feature_map[id_t] = new_feature;
+            //feature_of_interest * new_feature = new feature_of_interest(name, id_t, lat_lon(lat, lon), data_source_name, region, river_name);
+            feature_map[id_t] = new feature_of_interest(name, id_t, lat_lon(lat, lon), data_source_name, region, river_name);
             for (auto const & data_type : e.at(U("available_data")).as_array()) {
                 string_t data_type_str = data_type.as_string();
 

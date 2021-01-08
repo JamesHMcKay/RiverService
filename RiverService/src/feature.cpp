@@ -11,7 +11,7 @@ bool accept_observation(sensor_obs first, sensor_obs second, duration<double> to
     return true;
 }
 
-void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
+void feature_of_interest::add_obsevations(vector<sensor_obs> obs) {
     int num_of_obs = obs.size();
     duration<double > tolerance = minutes(0);
     if (obs_store.length == 0 && num_of_obs > 0) {
@@ -24,13 +24,6 @@ void feature_of_interest::filter_observations(vector<sensor_obs> obs) {
             obs_store.add_to_top(obs[i]);
         }
     }
-    //if (num_of_obs > 2) {
-    //    set_update_time(obs[num_of_obs - 1], obs[num_of_obs - 2]);
-    //} else {
-    //    system_clock::time_point current_time = system_clock::now();
-    //    chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());
-    //    next_update_time = current_time_ref + tolerance;
-    //}
 
     system_clock::time_point current_time = system_clock::now();
     chrono::duration<double> current_time_ref = current_time - utils::convert_time_str(utils::ref_time_str());

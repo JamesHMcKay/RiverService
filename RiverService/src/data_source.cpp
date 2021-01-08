@@ -87,7 +87,7 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     // perhaps just iterate through for each type since multiple requests are required
     // give each feature a list of types
 
-    feature_to_update->set_last_checked_for_update_time();
+    feature_to_update->set_last_checked_to_now();
     string lower_time = feature_to_update->get_lower_time();
     std::map<string, sensor_obs> values;
     for (auto &type : feature_to_update->get_observation_types()) {
@@ -108,7 +108,7 @@ void data_source::update_feature(feature_of_interest* feature_to_update) {
     for (const auto &s : values) {
         result.push_back(s.second);
     }
-    feature_to_update->filter_observations(result);
+    feature_to_update->add_obsevations(result);
 }
 
 std::pair<int, int> data_source::create_data_source_summary() {

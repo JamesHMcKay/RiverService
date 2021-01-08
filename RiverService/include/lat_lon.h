@@ -1,17 +1,8 @@
 #ifndef LAT_LON_H
 #define LAT_LON_H
 
-#include <iostream>
-#include <sstream>
 #include <string>
-
-#include <cpprest/http_listener.h>
 #include <cpprest/json.h>
-#include <fstream>
-
-using namespace web;
-using namespace web::http;
-using namespace web::http::experimental::listener;
 
 using namespace std;
 class lat_lon {
@@ -25,8 +16,8 @@ public:
 
     web::json::value get_lat_lon() {
         web::json::value result;
-        result[U("lat")] = json::value(lat);
-        result[U("lon")] = json::value(lon);
+        result[U("lat")] = web::json::value(lat);
+        result[U("lon")] = web::json::value(lon);
         return result;
     };
 };

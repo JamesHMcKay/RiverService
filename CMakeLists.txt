@@ -95,6 +95,7 @@ endif()
 add_executable(run_tests
   tests/main.cpp
   tests/test_utils.cpp
+  tests/test_feature.cpp
   ${SOURCE_FILES}
 )
 
