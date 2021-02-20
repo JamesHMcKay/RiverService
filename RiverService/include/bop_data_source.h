@@ -10,7 +10,7 @@ using namespace utility::conversions;
 class bop_data_source : public hilltop_data_source {
 public:
     bop_data_source() {
-        _host_url = utility::conversions::to_string_t("http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service");
+        _host_url = utility::conversions::to_string_t("http://sos.boprc.govt.nz/service");
         initiliased = false;
         data_source_name = "Bay of Plenty Regional Council";
         _source_type_dict = type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip Total_HourTotal");

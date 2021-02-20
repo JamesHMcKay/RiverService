@@ -126,6 +126,7 @@ int main(int argc, char *argv[]) {
     niwa_data_source niwa_source;
     
     vector<data_source*> data_sources;
+    data_sources.push_back(&bop);
     data_sources.push_back(&wellington_source);
     data_sources.push_back(&ecan);
     data_sources.push_back(&otago_source);
@@ -138,7 +139,7 @@ int main(int argc, char *argv[]) {
     data_sources.push_back(&horizons_source);
     data_sources.push_back(&southland);
     data_sources.push_back(&hawkes_bay);
-    data_sources.push_back(&bop);
+    
     data_sources.push_back(&tasman);
     data_sources.push_back(&niwa_source);
     data_sources.push_back(&auckland);
