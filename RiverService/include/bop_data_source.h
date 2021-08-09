@@ -13,7 +13,7 @@ public:
         _host_url = utility::conversions::to_string_t("http://sos.boprc.govt.nz/service");
         initiliased = false;
         data_source_name = "Bay of Plenty Regional Council";
-        _source_type_dict = type_dict("Discharge_Primary", "Stage", "Water Temperature", "Precip Total_HourTotal");
+        _source_type_dict = type_dict("Discharge.Primary", "Stage", "Water Temperature", "Precip Total.HourTotal");
         _source_units = units(1, 1);
     }
 
@@ -39,6 +39,24 @@ public:
             }
         }
     };
+
+    string get_flow_data(utility::string_t feature_id, string lower_time, string type) {
+        string time_filter = "om:phenomenonTime," + lower_time + "/" + utils::get_distant_future_time();
+        http_client client(_host_url);
+        uri_builder builder;
+        builder.append_query(U("service"), U("SOS"));
+        builder.append_query(U("version"), U("2.0.0"));
+        builder.append_query(U("request"), U("GetObservation"));
+        // builder.append_query(U("FeatureOfInterest"), feature_id);
+
+        // make Flow a parameter
+        string_t type_of_obs = utility::conversions::to_string_t(type);
+        builder.append_query(U("offering"), type_of_obs + "@" + feature_id);
+        builder.append_query(U("TemporalFilter"), utility::conversions::to_string_t(time_filter));
+        string res_string = utils::get_xml_response(_host_url, builder).get();
+        return res_string;
+    };
+
 };
 
 #endif

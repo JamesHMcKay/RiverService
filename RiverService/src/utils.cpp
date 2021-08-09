@@ -83,6 +83,7 @@ namespace utils {
         client_config.set_timeout(std::chrono::seconds(10));
         http_client client(host_url, client_config);
         auto path_query_fragment = uri.to_string();
+        // wcout << "path_query_fragment = " << path_query_fragment.c_str() << endl;
         return parse_xml_response(client, path_query_fragment);
     }
 
